@@ -1,4 +1,4 @@
-const OSS_PREFIX = 'https://sh-website.obs.cn-north-4.myhuaweicloud.com/'
+const OSS_PREFIX = 'https://sh-website.obs.cn-north-4.myhuaweicloud.com'
 
 export default {
   install(app) {

@@ -1,4 +1,4 @@
-const OSS_PREFIX = 'https://sh-website.obs.cn-north-4.myhuaweicloud.com/'
+const OSS_PREFIX = 'https://sh-website.obs.cn-north-4.myhuaweicloud.com'
 export function getOssImg(path) {
   if (!path) return ''
   if (path.startsWith('http')) return path
