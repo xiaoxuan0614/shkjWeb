@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node ../scripts/generate-gallery.js && vite",
-    "build": "node ../scripts/generate-gallery.js && vite build",
+    "dev": "node scripts/generate-gallery.js && vite",
+    "build": "node scripts/generate-gallery.js && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
