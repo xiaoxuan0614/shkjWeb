@@ -2,7 +2,8 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
 const request = axios.create({
-  baseURL: '/',
+  // 开发环境默认通过 Vite 代理访问本地后端，正式环境默认使用同源 /api。
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/',
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',

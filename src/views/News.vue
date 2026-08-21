@@ -22,11 +22,11 @@
 
         <!-- 新闻卡片列表 -->
         <div class="news-grid">
-          <div
+          <router-link
             v-for="(article, index) in articles"
             :key="article.id || index"
+            :to="`/news/${article.id}`"
             class="news-card"
-            @click="openArticle(article)"
           >
             <div>
             <!-- <img v-if="latestNews[0].images && latestNews[0].images" :src="latestNews[0].images" :alt="latestNews[0].title" class="news-card-img" onerror="this.style.display='none'"> -->
@@ -42,7 +42,7 @@
                 <span v-if="article.author" class="source-badge">{{ getArticleTypeName(article, newsTypeList) }}</span>
               </div>
             </div>
-          </div>
+          </router-link>
         </div>
 
         <!-- 分页 -->
@@ -147,16 +147,6 @@ function formatDate(time) {
   const m = String(d.getMonth() + 1).padStart(2, '0')
   const day = String(d.getDate()).padStart(2, '0')
   return `${y}-${m}-${day}`
-}
-
-function openArticle(article) {
-  if (article.link) {
-    const newWindow = window.open(article.link, '_blank')
-    if (newWindow) {
-      newWindow.opener = null
-      newWindow.rel = 'noopener noreferrer'
-    }
-  }
 }
 
 onMounted(() => {

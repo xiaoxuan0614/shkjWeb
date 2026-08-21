@@ -407,13 +407,7 @@ function navigateTo(path) {
 }
 
 function openArticle(news) {
-  if (news.link) {
-    const newWindow = window.open(news.link, '_blank')
-    if (newWindow) {
-      newWindow.opener = null
-      newWindow.rel = 'noopener noreferrer'
-    }
-  }
+  if (news.id) router.push(`/news/${news.id}`)
 }
 
 // ---- 卡片左右滑动 ----
