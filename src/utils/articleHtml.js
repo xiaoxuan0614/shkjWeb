@@ -1,3 +1,5 @@
+import { normalizeArticleHtmlUrls } from './articleUrl'
+
 const BLOCKED_TAGS = [
   'script',
   'style',
@@ -21,7 +23,16 @@ function isSafeUrl(value) {
 }
 
 export function sanitizeArticleHtml(html = '') {
-  if (!html || typeof DOMParser === 'undefined') return ''
+  if (!html) return ''
+  html = normalizeArticleHtmlUrls(html)
+  if (typeof DOMParser === 'undefined') {
+    const blocked = BLOCKED_TAGS.join('|')
+    return String(html)
+      .replace(new RegExp(`<(${blocked})\\b[^>]*>[\\s\\S]*?<\\/\\1\\s*>`, 'gi'), '')
+      .replace(new RegExp(`<(${blocked})\\b[^>]*\\/?>`, 'gi'), '')
+      .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+      .replace(/\s(href|src|poster|xlink:href)\s*=\s*(["'])\s*(javascript:|vbscript:|data:)[\s\S]*?\2/gi, '')
+  }
 
   const document = new DOMParser().parseFromString(html, 'text/html')
   document.querySelectorAll(BLOCKED_TAGS.join(',')).forEach((element) => element.remove())

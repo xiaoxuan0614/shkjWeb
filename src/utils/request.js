@@ -3,7 +3,9 @@ import { ElMessage } from 'element-plus'
 
 const request = axios.create({
   // 开发环境默认通过 Vite 代理访问本地后端，正式环境默认使用同源 /api。
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/',
+  baseURL: import.meta.env.SSR
+    ? (process.env.SEO_API_BASE_URL || 'https://www.shouhuikeji.com')
+    : (import.meta.env.VITE_API_BASE_URL || '/'),
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
@@ -33,22 +35,22 @@ request.interceptors.response.use(
 
     // ========== 统一状态码处理 ==========
     if (status === 400) {
-      ElMessage.error(data.message || '参数校验失败')
+      if (!import.meta.env.SSR && !response.config.silent) ElMessage.error(data.message || '参数校验失败')
       return Promise.reject(data)
     }
     if (status === 500) {
-      ElMessage.error(data.message || '数据库异常，请联系管理员')
+      if (!import.meta.env.SSR && !response.config.silent) ElMessage.error(data.message || '数据库异常，请联系管理员')
       return Promise.reject(data)
     }
 
     // 其他 http 错误 404/403 等兜底
-    ElMessage.error(data.message || `请求错误[${status}]`)
+    if (!import.meta.env.SSR && !response.config.silent) ElMessage.error(data.message || `请求错误[${status}]`)
     return Promise.reject(data)
   },
   (error) => {
     // 走到这里代表真正网络异常：断网、跨域、无法连接服务器
     // console.error('API Error:', error.message)
-    ElMessage.error('网络错误，请稍后重试')
+    if (!import.meta.env.SSR && !error.config?.silent) ElMessage.error('网络错误，请稍后重试')
     return Promise.reject(error)
   },
 )

@@ -5,7 +5,7 @@
       <div class="detail-hero-bg"></div>
       <div class="detail-hero-content">
         <h1>{{ detail.title }}</h1>
-        <h2>{{ detail.location }}</h2>
+        <p class="detail-subtitle">{{ detail.location }}</p>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt;
@@ -18,7 +18,7 @@
     <section class="detail-section section-pain">
       <div class="container">
         <div class="section-heading">
-          <h3 class="section-heading-cn">客户痛点</h3>
+          <h2 class="section-heading-cn">客户痛点</h2>
           <span class="section-heading-en">PAIN POINTS</span>
         </div>
         <p class="section-text">{{ detail.painPoints }}</p>
@@ -29,7 +29,7 @@
     <section class="detail-section section-solution">
       <div class="container">
         <div class="section-heading">
-          <h3 class="section-heading-cn">落地方案</h3>
+          <h2 class="section-heading-cn">落地方案</h2>
           <span class="section-heading-en">SOLUTION</span>
         </div>
         <p class="section-text">{{ detail.intro }}</p>
@@ -40,14 +40,14 @@
     <section class="detail-section section-value">
       <div class="container">
         <div class="section-heading">
-          <h3 class="section-heading-cn">成效价值</h3>
+          <h2 class="section-heading-cn">成效价值</h2>
           <span class="section-heading-en">ACHIEVEMENTS</span>
         </div>
         <div class="value-list">
           <div v-for="(item, i) in detail.achievements" :key="i" class="value-item">
             <div class="value-item-marker"></div>
             <div class="value-item-content">
-              <h4>{{ item.title }}</h4>
+              <h3>{{ item.title }}</h3>
               <p>{{ item.desc }}</p>
             </div>
           </div>
@@ -59,27 +59,30 @@
     <section class="detail-section gallery-section">
       <div class="container">
         <div class="section-heading">
-          <h3 class="section-heading-cn">照片展示</h3>
+          <h2 class="section-heading-cn">照片展示</h2>
           <span class="section-heading-en">GALLERY</span>
         </div>
         <div class="gallery-carousel">
           <div class="gallery-viewport">
             <div class="gallery-track" :style="{ transform: `translateX(-${currentSlide * 100}%)` }">
               <div v-for="(img, i) in gallery" :key="i" class="gallery-slide">
-                <img v-img-oss :src="img" :alt="detail.title" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='400px'">
+                <img v-img-oss :src="img" :alt="`${detail.title}项目照片${i + 1}`" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='400px'">
               </div>
             </div>
           </div>
           <div class="gallery-dots">
-            <span
+            <button
               v-for="(_, i) in gallery"
               :key="i"
+              type="button"
               :class="['gallery-dot', { active: currentSlide === i }]"
+              :aria-label="`查看第 ${i + 1} 张项目照片`"
+              :aria-current="currentSlide === i ? 'true' : undefined"
               @click="currentSlide = i"
-            ></span>
+            ></button>
           </div>
-          <div class="gallery-arrow gallery-arrow-left" @click="prevSlide">‹</div>
-          <div class="gallery-arrow gallery-arrow-right" @click="nextSlide">›</div>
+          <button type="button" class="gallery-arrow gallery-arrow-left" aria-label="上一张项目照片" @click="prevSlide">‹</button>
+          <button type="button" class="gallery-arrow gallery-arrow-right" aria-label="下一张项目照片" @click="nextSlide">›</button>
         </div>
       </div>
     </section>
@@ -87,24 +90,23 @@
     <!-- CTA -->
     <section class="detail-cta">
       <div class="container">
-        <h3>想了解类似案例？</h3>
+        <h2>想了解类似案例？</h2>
         <p>我们的团队将为您提供专业的案例咨询服务</p>
-        <a href="/contact" class="btn-cta">联系我们</a>
+        <router-link to="/contact" class="btn-cta">联系我们</router-link>
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { caseData } from '../data/cases-data'
 import { galleryMap } from '../data/cases-gallery-generated'
 
 const route = useRoute()
-const detail = ref({})
+const detail = ref(caseData.find(c => c.id === route.params.id))
 const currentSlide = ref(0)
-let timer = null
 
 const gallery = computed(() => {
   const caseInfo = caseData.find(c => c.id === route.params.id)
@@ -112,14 +114,9 @@ const gallery = computed(() => {
   return galleryMap[caseInfo.imageFolder] || []
 })
 
-onMounted(() => {
-  const id = route.params.id
-  detail.value = caseData.find(c => c.id === id) || caseData[0]
-  startAutoPlay()
-})
-
-onUnmounted(() => {
-  if (timer) clearInterval(timer)
+watch(() => route.params.id, (id) => {
+  detail.value = caseData.find(c => c.id === id)
+  currentSlide.value = 0
 })
 
 function nextSlide() {
@@ -132,12 +129,6 @@ function prevSlide() {
   currentSlide.value = (currentSlide.value - 1 + gallery.value.length) % gallery.value.length
 }
 
-function startAutoPlay() {
-  if (timer) clearInterval(timer)
-  if (gallery.value.length > 1) {
-    timer = setInterval(nextSlide, 4000)
-  }
-}
 </script>
 
 <style scoped>
@@ -172,7 +163,7 @@ function startAutoPlay() {
   margin-bottom: 8px;
 }
 
-.detail-hero-content h2 {
+.detail-subtitle {
   font-size: 22px;
   font-weight: 400;
   opacity: 0.9;
@@ -280,7 +271,7 @@ function startAutoPlay() {
   flex-shrink: 0;
 }
 
-.value-item-content h4 {
+.value-item-content h3 {
   font-size: 16px;
   color: #1a3c7c;
   font-weight: 700;
@@ -346,6 +337,8 @@ function startAutoPlay() {
   border-radius: 50%;
   background: #ddd;
   cursor: pointer;
+  padding: 0;
+  border: 0;
   transition: all 0.3s;
 }
 
@@ -368,6 +361,8 @@ function startAutoPlay() {
   font-size: 22px;
   color: #333;
   cursor: pointer;
+  border: 0;
+  font: inherit;
   transition: all 0.3s;
   z-index: 10;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -394,7 +389,7 @@ function startAutoPlay() {
   color: #fff;
 }
 
-.detail-cta h3 {
+.detail-cta h2 {
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 12px;

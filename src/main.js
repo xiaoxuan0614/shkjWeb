@@ -1,43 +1,25 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-
-import { debounce } from './utils/debounce'
 import { nextTick } from 'vue'
-import { getOssImg } from './utils/imgUrl'
+import 'element-plus/es/components/base/style/css'
+import 'element-plus/es/components/button/style/css'
+import 'element-plus/es/components/col/style/css'
+import 'element-plus/es/components/drawer/style/css'
+import 'element-plus/es/components/form/style/css'
+import 'element-plus/es/components/form-item/style/css'
+import 'element-plus/es/components/input/style/css'
+import 'element-plus/es/components/menu/style/css'
+import 'element-plus/es/components/menu-item/style/css'
+import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/option/style/css'
+import 'element-plus/es/components/row/style/css'
+import 'element-plus/es/components/select/style/css'
+import 'element-plus/es/components/sub-menu/style/css'
+import { createShouhuiApp } from './app'
 
-import imgOss from './directives/imgOss.js'
-
-const app = createApp(App)
-app.config.globalProperties.$ossImg = getOssImg
-// ==========新增这一行！！！==========
-// app.provide('ossImg', getOssImg)
-
-app.use(router)
-app.use(ElementPlus)
-app.use(imgOss)
-// console.log('指令注册完成！', app.directive('img-oss'))
-
-// 全局按钮防抖指令：v-debounce="handler" 或 v-debounce="500"（仅延迟）
-app.directive('debounce', {
-  mounted(el, binding) {
-    const delay = typeof binding.value === 'number' ? binding.value : 500
-    const handler = debounce(() => {
-      if (typeof binding.value === 'function') binding.value()
-    }, delay)
-    el._debouncedHandler = handler
-    el.addEventListener('click', handler)
-  },
-  beforeUnmount(el) {
-    el.removeEventListener('click', el._debouncedHandler)
-  }
-})
+const { app, router } = createShouhuiApp({ initialPath: window.location.pathname })
 
 // 路由切换时滚动到页面顶部
 router.afterEach(() => {
   nextTick(() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' }))
 })
-app.mount('#app')
 
+router.isReady().then(() => app.mount('#app'))

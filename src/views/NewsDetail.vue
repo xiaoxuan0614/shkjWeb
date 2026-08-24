@@ -4,8 +4,8 @@
       <div class="page-hero-bg"></div>
       <div class="detail-hero-overlay"></div>
       <div class="page-hero-content">
-        <h1>NEWS</h1>
-        <h2>新闻详情</h2>
+        <p class="hero-en">NEWS</p>
+        <h1>新闻详情</h1>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt;
@@ -44,7 +44,7 @@
           <img
             v-if="article.cover"
             class="article-cover"
-            :src="article.cover"
+            :src="normalizeArticleUrl(article.cover)"
             :alt="article.title"
             referrerpolicy="no-referrer"
           >
@@ -56,7 +56,7 @@
             <a
               v-if="article.link"
               class="original-link"
-              :href="article.link"
+              :href="normalizeArticleUrl(article.link)"
               target="_blank"
               rel="noopener noreferrer"
             >查看原文</a>
@@ -68,14 +68,20 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onServerPrefetch, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import request from '../utils/request'
 import { sanitizeArticleHtml } from '../utils/articleHtml'
+import { useSeoManager } from '../seo/manager'
+import { normalizeArticleUrl } from '../utils/articleUrl'
+import { usePageData } from '../seo/pageData'
 
 const route = useRoute()
-const article = ref({})
-const loading = ref(true)
+const seoManager = useSeoManager()
+const pageData = usePageData()
+const initialArticle = typeof window !== 'undefined' ? window.__SEO_PAGE_DATA__?.article : undefined
+const article = ref(initialArticle || {})
+const loading = ref(!initialArticle)
 const errorMessage = ref('')
 
 const safeContent = computed(() => sanitizeArticleHtml(article.value.content))
@@ -91,7 +97,8 @@ async function loadArticle() {
     }
 
     article.value = data.article
-    document.title = `${data.article.title} - 新闻中心`
+    pageData.article = data.article
+    seoManager.setRoute(route.path, data.article)
   } catch (error) {
     article.value = {}
     errorMessage.value = error?.message || '请稍后重试或返回新闻列表'
@@ -111,7 +118,11 @@ function formatDate(time) {
   return `${year}-${month}-${day}`
 }
 
-onMounted(loadArticle)
+onMounted(() => {
+  if (initialArticle) seoManager.setRoute(route.path, initialArticle)
+  else loadArticle()
+})
+onServerPrefetch(loadArticle)
 watch(() => route.params.id, (id, previousId) => {
   if (id && id !== previousId) loadArticle()
 })
@@ -144,14 +155,6 @@ watch(() => route.params.id, (id, previousId) => {
   max-width: 920px;
 }
 
-.detail-hero-label {
-  margin-bottom: 14px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 5px;
-  opacity: 0.72;
-}
-
 .detail-hero-content h1 {
   margin: 0;
   font-size: clamp(28px, 4vw, 44px);
@@ -159,9 +162,6 @@ watch(() => route.params.id, (id, previousId) => {
   letter-spacing: 1px;
 }
 .page-hero-content { position: relative; z-index: 1; }
-.page-hero-content h1 { font-size: 42px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; }
-.page-hero-content h2 { font-size: 26px; font-weight: 400; opacity: 0.9; }
-
 .page-breadcrumb {
   position: absolute;
   right: max(24px, calc(50% - 600px));

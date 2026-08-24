@@ -1,10 +1,40 @@
 <template>
   <div>
     <!-- Hero Banner -->
-    <section class="hero-banner" style="background: linear-gradient(135deg, #0a1e50 0%, #1a3c7c 40%, #2d5bbf 100%);">
+    <section class="hero-banner">
       <div class="hero-overlay">
-        <h1>科技赋能物流 智慧引领未来</h1>
-        <p>专业的智慧堆场解决方案供应商</p>
+        <div class="container hero-content">
+          <div class="hero-layout">
+            <div class="hero-main">
+              <div class="hero-heading">
+                <h1 aria-label="科技赋能物流，智慧引领未来">
+                  <span class="hero-title-prefix">科技赋能物流</span>
+                  <span class="hero-title-main">智慧引领未来</span>
+                </h1>
+                <p class="hero-positioning">专业的智慧堆场解决方案供应商</p>
+              </div>
+              <div class="hero-support">
+                <p class="hero-lead">专注物流场站数字化升级，以 AI 视觉识别、多模态高精度定位和物联网感知等自研技术，提供软硬件一体化的数字化整体解决方案。</p>
+                <div class="hero-actions">
+                  <router-link to="/solutions" class="hero-primary">解决方案</router-link>
+                  <router-link to="/contact" class="hero-secondary">联系我们</router-link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <nav class="hero-capabilities" aria-label="核心业务场景">
+            <router-link
+              v-for="item in productList"
+              :key="item.path"
+              :to="item.path"
+              class="capability-item"
+            >
+              <strong>{{ item.name }}</strong>
+              <small>{{ item.heroDesc }}</small>
+            </router-link>
+          </nav>
+        </div>
       </div>
     </section>
 
@@ -14,18 +44,19 @@
         <div class="section-title">
           <h2>产品展示</h2>
           <p>全系智能产品，软硬协同、全域赋能，一站式解锁智慧场站新体验</p>
-          <!-- <p style="font-size:13px;color:#888;margin-top:8px;">全系智能产品，软硬协同、全域赋能，一站式解锁智慧场站新体验</p> -->
           <div class="section-title-line"></div>
         </div>
 
         <!-- 四大产品图标 -->
         <div class="product-icons">
-          <div
+          <button
             v-for="(item, index) in productList"
             :key="item.name"
+            type="button"
             :class="['product-icon-item', { active: activeProductIndex === index }]"
             @mouseenter="activeProductIndex = index"
-            @click="navigateTo('/solutions')"
+            :aria-pressed="activeProductIndex === index"
+            @click="activeProductIndex = index"
           >
             <div class="product-icon-wrap">
               <!-- <svg viewBox="0 0 48 48" width="40" height="40">
@@ -34,7 +65,7 @@
               <img v-img-oss :src="item.icon" :alt="item.title">
             </div>
             <span class="product-icon-name">{{ item.name }}</span>
-          </div>
+          </button>
         </div>
 
         <!-- 对应图片 -->
@@ -52,7 +83,7 @@
               <div class="product-tags">
                 <span v-for="tag in item.tags" :key="tag" class="product-tag">{{ tag }}</span>
               </div>
-              <a class="btn-view-detail" @click.prevent="navigateTo('/solutions')">查看详情</a>
+              <router-link :to="item.path" class="btn-view-detail">查看详情</router-link>
             </div>
             <img v-img-oss :src="item.image" :alt="item.name" class="product-image" onerror="this.style.display='none'">
           </div>
@@ -94,17 +125,17 @@
 
         <div class="news-grid">
           <!-- 第一条：占满整行 -->
-          <div
+          <router-link
             v-if="latestNews.length > 0"
+            :to="`/news/${latestNews[0].id}`"
             class="news-card news-card--featured"
-            @click="openArticle(latestNews[0])"
           >
           <div>
             <!-- <img v-if="latestNews[0].images && latestNews[0].images" :src="latestNews[0].images" :alt="latestNews[0].title" class="news-card-img" onerror="this.style.display='none'"> -->
-            <img v-if="latestNews[0].cover" referrerpolicy="no-referrer" :src="latestNews[0].cover" :alt="latestNews[0].title" class="news-card-img" onerror="this.style.display='none'">
+            <img v-if="latestNews[0].cover" referrerpolicy="no-referrer" :src="normalizeArticleUrl(latestNews[0].cover)" :alt="latestNews[0].title" class="news-card-img" onerror="this.style.display='none'">
           </div>
             <div class="news-card-body">
-              <h4>{{ latestNews[0].title }}</h4>
+              <h3>{{ latestNews[0].title }}</h3>
               <div class="news-card-footer">
                 <span class="news-date">{{ latestNews[0].digest }}</span>
                 <svg class="card-arrow" viewBox="0 0 16 16" width="16" height="16">
@@ -112,22 +143,22 @@
                 </svg>
               </div>
             </div>
-          </div>
+          </router-link>
 
           <!-- 剩余3条：一行3列 -->
-          <div
+          <router-link
             v-for="news in latestNews.slice(1, 4)"
             :key="news.title"
+            :to="`/news/${news.id}`"
             class="news-card"
-            @click="openArticle(news)"
           >
           <div>
             <!-- <img v-if="latestNews[0].images && latestNews[0].images" :src="latestNews[0].images" :alt="latestNews[0].title" class="news-card-img" onerror="this.style.display='none'"> -->
-            <img v-if="news.cover" referrerpolicy="no-referrer" :src="news.cover" :alt="news.title" class="news-card-img" onerror="this.style.display='none'">
+            <img v-if="news.cover" referrerpolicy="no-referrer" :src="normalizeArticleUrl(news.cover)" :alt="news.title" class="news-card-img" loading="lazy" onerror="this.style.display='none'">
           </div>
             <div class="news-card-body">
               <!-- <span class="news-tag">{{ news.source || '公众号' }}</span> -->
-              <h4>{{ news.title }}</h4>
+              <h3>{{ news.title }}</h3>
               <div class="news-card-footer">
                 <span class="news-date">{{ news.digest }}</span>
                 <svg class="card-arrow" viewBox="0 0 16 16" >
@@ -135,7 +166,7 @@
                 </svg>
               </div>
             </div>
-          </div>
+          </router-link>
         </div>
       </div>
     </section>
@@ -143,7 +174,7 @@
     <!-- 合作客户 -->
     <section class="clients-section">
       <div class="container">
-        <div class="section-title" style="margin-bottom:40px;">
+        <div class="section-title clients-title">
           <h2>合作客户</h2>
           <div class="section-title-line"></div>
         </div>
@@ -171,20 +202,16 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted, onServerPrefetch } from 'vue'
 import request from '../utils/request'
+import { normalizeArticleUrl } from '../utils/articleUrl'
 
-const router = useRouter()
-const currentSlide = ref(0)
-const slides = ref(3)
-let timer = null
 const latestNews = ref([])
 
 // 加载最新4条新闻，失败则回退到本地 JSON
 async function loadLatestNews() {
   try {
-    const data = await request.get('/api/articles?page=0&size=10')
+    const data = await request.get('/api/articles?page=0&size=10', { silent: true })
     latestNews.value = data.articles.slice(0, 4)
   } catch {
       latestNews.value = []
@@ -208,7 +235,9 @@ const productList = [
     icon: '/images/choose-icon/gate.png',
     color: '#1a3c7c',
     shortDesc: '以AI视觉识别与自动化管控为核心，构建全流程无人化闸口',
+    heroDesc: 'AI识别与自动化管控',
     tags: ['箱号识别', '铅封派发', '无人地磅', '线上预约'],
+    path: '/solutions/gate',
     image: '/images/case/gate3.jpg',
     bg: 'linear-gradient(135deg, #1a3c7c, #2d5bbf)',
   },
@@ -217,7 +246,9 @@ const productList = [
     icon: '/images/choose-icon/yard.png',
     color: '#2d5bbf',
     shortDesc: '核心业务管理系统，打造场站一体化数字运营中枢',
+    heroDesc: '一体化数字运营中枢',
     tags: ['YMS空重箱', 'CFS拆装箱', '智能调度', 'WMS仓储物料','SAMA船货代理'],
+    path: '/solutions/yard',
     image: '/images/case/yard2.jpg',
     bg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
   },  
@@ -226,7 +257,9 @@ const productList = [
     icon: '/images/choose-icon/safety.png',
     color: '#4286f4',
     shortDesc: '全方位安全监控、风险预警、合规审计',
+    heroDesc: '风险预警与合规审计',
     tags: ['人车安全监管', '360°环视', '海关在途监管','环保门禁'],
+    path: '/solutions/safety',
     image: '/images/case/safety.jpg',
     bg: 'linear-gradient(135deg, #373b44, #4286f4)',
   },
@@ -235,7 +268,9 @@ const productList = [
     icon: '/images/choose-icon/hardware.png',
     color: '#2193b0',
     shortDesc: 'IoT设备接入、5G网络覆盖、边缘计算支持',
+    heroDesc: 'IoT接入与边缘计算',
     tags: ['国产设备', '打印扫码', '车载终端', '无线通信基站', '国产工控机'],
+    path: '/solutions/hardware',
     image: '/images/case/hardware.png',
     bg: 'linear-gradient(135deg, #2193b0, #6dd5ed)',
   },
@@ -390,26 +425,6 @@ const clients = ref([
   { name: '太阳纸业', img: 'images/clients/taiyang.png' },
 ])
 
-function nextSlide() {
-  currentSlide.value = (currentSlide.value + 1) % slides.value
-}
-
-function prevSlide() {
-  currentSlide.value = (currentSlide.value - 1 + slides.value) % slides.value
-}
-
-function goToSlide(index) {
-  currentSlide.value = index
-}
-
-function navigateTo(path) {
-  router.push(path)
-}
-
-function openArticle(news) {
-  if (news.id) router.push(`/news/${news.id}`)
-}
-
 // ---- 卡片左右滑动 ----
 function updateScrollState() {
   if (!cardsScroll.value) return
@@ -470,15 +485,15 @@ function handleImgError(e) {
 }
 
 onMounted(() => {
-  timer = setInterval(nextSlide, 5000)
   // 卡片滚动状态
   setTimeout(updateScrollState, 100)
   window.addEventListener('resize', updateScrollState)
-  loadLatestNews()
+  if (latestNews.value.length === 0) loadLatestNews()
 })
 
+onServerPrefetch(loadLatestNews)
+
 onUnmounted(() => {
-  if (timer) clearInterval(timer)
   window.removeEventListener('resize', updateScrollState)
 })
 </script>
@@ -486,8 +501,11 @@ onUnmounted(() => {
 <style scoped>
 .hero-banner {
   position: relative;
-  height: 400px;
-  background: var(--brand-gradient);
+  min-height: 560px;
+  background:
+    radial-gradient(circle at 82% 34%, rgba(119, 170, 245, 0.3), transparent 31%),
+    linear-gradient(118deg, transparent 0 63%, rgba(255, 255, 255, 0.035) 63% 63.12%, transparent 63.12% 100%),
+    var(--brand-gradient);
   overflow: hidden;
 }
 
@@ -497,22 +515,180 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
+  align-items: stretch;
   color: #fff;
+  background: linear-gradient(90deg, rgba(12, 40, 82, 0.42), rgba(34, 86, 153, 0.02));
+}
+
+.hero-content {
+  display: grid;
+  min-height: 560px;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding-top: 0;
+  padding-bottom: 0;
+  text-align: left;
+}
+
+.hero-layout {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-block: 40px 32px;
+}
+
+.hero-main {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+  gap: clamp(48px, 7vw, 96px);
+  align-items: end;
+  min-width: 0;
+  text-align: left;
+}
+
+.hero-heading,
+.hero-support {
+  min-width: 0;
 }
 
 .hero-overlay h1 {
-  font-size: 42px;
+  max-width: 780px;
+  margin: 0 0 16px;
+  font-size: inherit;
   font-weight: 700;
-  letter-spacing: 4px;
-  margin-bottom: 16px;
+  text-wrap: balance;
 }
 
-.hero-overlay p {
+.hero-overlay h1 span {
+  display: block;
+  padding: 6px 0px;
+}
+
+.hero-title-prefix {
+  color: #d8e7ff;
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.hero-title-main {
+  margin-top: 8px;
+  color: #fff;
+  font-size: clamp(52px, 5.4vw, 68px);
+  line-height: 1.04;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.hero-positioning {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.hero-lead {
+  max-width: 460px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 18px !important;
+  line-height: 1.7;
+  letter-spacing: 0 !important;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+  margin-top: 30px;
+}
+
+.hero-support {
+  max-width: 500px;
+  justify-self: end;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.hero-actions a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 8px;
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast);
+}
+
+.hero-primary {
+  color: #fff;
+  background: var(--brand-light);
+  border: 1px solid var(--brand-light);
+}
+
+.hero-primary:hover { background: #3976e4; border-color: #3976e4; }
+
+.hero-secondary {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+}
+
+.hero-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: #fff; }
+
+.hero-capabilities {
+  display: grid;
+  width: 100vw;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 0;
+  margin-left: calc(50% - 50vw);
+  padding-inline: max(24px, calc((100vw - 1200px) / 2));
+  background: rgba(8, 34, 75, 0.38);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.capability-item {
+  display: flex;
+  min-width: 0;
+  min-height: 88px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 15px 24px;
+  color: #fff;
+  text-align: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.16);
+  transition: color var(--motion-fast), background-color var(--motion-fast);
+}
+
+.capability-item:last-child { border-right: 0; }
+
+.capability-item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.capability-item strong {
   font-size: 16px;
-  opacity: 0.85;
-  letter-spacing: 2px;
+  line-height: 1.4;
+}
+
+.capability-item small {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .hero-arrows {
@@ -799,11 +975,17 @@ onUnmounted(() => {
   align-items: center;
   padding: 24px 40px;
   cursor: pointer;
+  appearance: none;
+  font: inherit;
+  background: transparent;
+  border: 0;
   transition: all 0.3s;
   position: relative;
   flex: 1;
   max-width: 260px;
 }
+
+.clients-title { margin-bottom: 40px; }
 
 .product-icon-item:not(:last-child)::after {
   content: '';
@@ -1015,7 +1197,7 @@ onUnmounted(() => {
   justify-content: center;
 }
 
-.news-card--featured h4 {
+.news-card--featured h3 {
   font-size: 18px;
 }
 
@@ -1023,7 +1205,7 @@ onUnmounted(() => {
   padding: 18px 20px;
 }
 
-.news-card-body h4 {
+.news-card-body h3 {
   font-size: 14px;
   color: #333;
   /* margin-bottom: 8px; */
@@ -1036,7 +1218,7 @@ onUnmounted(() => {
   overflow: hidden;
 }
 
-.news-card--featured .news-card-body h4 {
+.news-card--featured .news-card-body h3 {
   -webkit-line-clamp: 1;
   line-clamp: 1;
   font-size: 18px;
@@ -1136,6 +1318,10 @@ onUnmounted(() => {
 
 /* Responsive */
 @media (max-width: 1024px) {
+  .hero-main {
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+    gap: 44px;
+  }
   .solution-card {
     flex: 0 0 280px;
   }
@@ -1157,9 +1343,39 @@ onUnmounted(() => {
   .news-grid { grid-template-columns: 1fr; }
   .news-card--featured { grid-template-columns: 1fr; }
   .clients-grid { grid-template-columns: repeat(3, 1fr); }
-  .hero-banner { height: 300px; }
-  .hero-overlay h1 { font-size: 24px; }
-  .hero-overlay p { font-size: 14px; }
+  .hero-banner,
+  .hero-content { min-height: 640px; }
+  .hero-content { padding-top: 0; padding-bottom: 0; }
+  .hero-layout { padding-block: 44px 32px; }
+  .hero-main {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .hero-support {
+    max-width: 680px;
+    justify-self: start;
+  }
+  .hero-title-prefix { font-size: 32px; }
+  .hero-title-main { font-size: 46px; }
+  .hero-positioning { font-size: 18px; }
+  .hero-lead { font-size: 16px !important; }
+  .hero-capabilities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+    padding-inline: 16px;
+  }
+  .capability-item {
+    min-height: 84px;
+    padding: 0 16px;
+  }
+  .capability-item:nth-child(2n) { border-right: 0; }
+  .capability-item:nth-child(-n + 2) { border-bottom: 1px solid rgba(255, 255, 255, 0.16); }
+  .capability-item small {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
   .section-title h2 { font-size: 22px; }
   .product-icons { flex-wrap: wrap; gap: 0; }
   .product-icon-item { padding: 16px 20px; }
@@ -1170,9 +1386,17 @@ onUnmounted(() => {
 }
 
 @media (max-width: 480px) {
-  .hero-banner { height: 220px; }
-  .hero-overlay h1 { font-size: 20px; letter-spacing: 2px; }
-  .hero-overlay p { font-size: 12px; }
+  .hero-banner,
+  .hero-content { min-height: 670px; }
+  .hero-title-prefix { font-size: 28px; }
+  .hero-title-main { font-size: 40px; line-height: 1.12; letter-spacing: -0.02em; }
+  .hero-positioning { font-size: 17px; }
+  .hero-actions { width: 100%; }
+  .hero-actions a { flex: 1; padding-inline: 16px; }
+  .capability-item {
+    padding: 0 12px;
+  }
+  .capability-item strong { font-size: 14px; }
   .section { padding: 40px 0; }
   .section-title { margin-bottom: 30px; }
   .section-title h2 { font-size: 20px; }

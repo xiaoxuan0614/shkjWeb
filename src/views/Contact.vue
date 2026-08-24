@@ -4,8 +4,8 @@
       <div class="page-hero-bg"></div>
       <div class="page-hero-overlay"></div>
       <div class="page-hero-content">
-        <h1>CONTACT</h1>
-        <h2>联系我们</h2>
+        <p class="hero-en">CONTACT</p>
+        <h1>联系我们</h1>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt; 联系我们
@@ -17,30 +17,40 @@
         <div class="contact-grid">
           <!-- 联系信息 -->
           <div class="contact-info">
-            <h3>联系方式</h3>
+            <p class="contact-kicker">CONTACT US</p>
+            <h2>联系我们</h2>
+            <p class="contact-description">如果您已有明确的项目需求，可以通过电话或邮件直接与我们沟通。</p>
             <div class="info-item">
-              <span class="info-icon">📞</span>
+              <span class="info-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M7.5 3.5 10 8 8.4 9.7a15.2 15.2 0 0 0 5.9 5.9L16 14l4.5 2.5-.9 3.1c-.2.7-.9 1.2-1.7 1.1C10.3 19.8 4.2 13.7 3.3 6.1c-.1-.8.4-1.5 1.1-1.7l3.1-.9Z"/></svg>
+              </span>
               <div>
                 <div class="info-label">服务热线</div>
-                <div class="info-value">022-66220191</div>
+                <a class="info-value" href="tel:022-66220191">022-66220191</a>
               </div>
             </div>
             <div class="info-item">
-              <span class="info-icon">📍</span>
+              <span class="info-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              </span>
               <div>
                 <div class="info-label">办公地址</div>
                 <div class="info-value">天津市滨海新区京门大道 396 号</div>
               </div>
             </div>
             <div class="info-item">
-              <span class="info-icon">📧</span>
+              <span class="info-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+              </span>
               <div>
                 <div class="info-label">电子邮箱</div>
-                <div class="info-value">shkj2023@shouhuikeji.cn</div>
+                <a class="info-value" href="mailto:shkj2023@shouhuikeji.cn">shkj2023@shouhuikeji.cn</a>
               </div>
             </div>
             <div class="info-item">
-              <span class="info-icon">🕐</span>
+              <span class="info-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              </span>
               <div>
                 <div class="info-label">工作时间</div>
                 <div class="info-value">周一至周五 9:00-18:00</div>
@@ -50,27 +60,29 @@
 
           <!-- 留言表单 -->
           <div class="contact-form">
-            <h3>在线留言</h3>
+            <p class="contact-kicker">PROJECT INQUIRY</p>
+            <h2>咨询信息</h2>
+            <p class="contact-description">填写基本信息与咨询方向，我们会尽快安排专业人员联系您。</p>
             <el-form ref="formRef" :model="form" :rules="rules" label-position="top" @submit.prevent="submitForm">
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="姓名" prop="name">
-                    <el-input v-model="form.name" placeholder="请输入您的姓名" maxlength="20" clearable />
+                    <el-input v-model="form.name" placeholder="请输入您的姓名" maxlength="20" autocomplete="name" clearable />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="电话" prop="phone">
-                    <el-input v-model="form.phone" placeholder="请输入您的联系电话" maxlength="20" clearable />
+                    <el-input v-model="form.phone" type="tel" placeholder="请输入您的联系电话" maxlength="20" autocomplete="tel" clearable />
                   </el-form-item>
                 </el-col>
               </el-row>
 
               <el-form-item label="邮箱" prop="email">
-                <el-input v-model="form.email" placeholder="请输入您的邮箱" maxlength="50" clearable />
+                <el-input v-model="form.email" type="email" placeholder="请输入您的邮箱" maxlength="50" autocomplete="email" clearable />
               </el-form-item>
 
               <el-form-item label="公司名称" prop="company">
-                <el-input v-model="form.company" placeholder="请输入您的公司名称" maxlength="50" clearable />
+                <el-input v-model="form.company" placeholder="请输入您的公司名称" maxlength="50" autocomplete="organization" clearable />
               </el-form-item>
 
               <el-form-item label="咨询类型" prop="types">
@@ -266,14 +278,14 @@ async function submitForm() {
   z-index: 1;
 }
 
-.page-hero-content h1 {
+.page-hero-content .hero-en {
   font-size: 42px;
   font-weight: 700;
   letter-spacing: 3px;
   margin-bottom: 8px;
 }
 
-.page-hero-content h2 {
+.page-hero-content h1 {
   font-size: 26px;
   font-weight: 400;
   opacity: 0.9;
@@ -308,12 +320,27 @@ async function submitForm() {
   gap: 60px;
 }
 
-.contact-info h3,
-.contact-form h3 {
-  font-size: 22px;
+.contact-info h2,
+.contact-form h2 {
+  font-size: 28px;
   color: var(--brand-primary);
-  margin-bottom: 30px;
-  font-weight: 600;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.contact-kicker {
+  margin-bottom: 8px;
+  color: var(--brand-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.contact-description {
+  margin-bottom: 28px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.8;
 }
 
 .info-item {
@@ -334,6 +361,16 @@ async function submitForm() {
   background: var(--bg-light);
   border-radius: 10px;
   flex-shrink: 0;
+}
+
+.info-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .info-label {

@@ -7,7 +7,9 @@
           <img v-img-oss src="/images/logo/logo-white.png" alt="首汇科技" class="footer-logo">
           <div class="footer-contact-info">
             <div class="contact-row">
-              <span class="phone-icon">📞</span>
+              <svg class="phone-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7.5 3.5 10 8 8.4 9.7a15.2 15.2 0 0 0 5.9 5.9L16 14l4.5 2.5-.9 3.1c-.2.7-.9 1.2-1.7 1.1C10.3 19.8 4.2 13.7 3.3 6.1c-.1-.8.4-1.5 1.1-1.7l3.1-.9Z" />
+              </svg>
               <a href="tel:022-66220191" class="phone">022-66220191</a>
             </div>
             <p class="address">办公地址：天津市滨海新区京门大道396号</p>
@@ -71,15 +73,10 @@ function scrollToTop() {
 
 <style scoped>
 .footer {
-  background: #0a1e50;
-  color: #ccc;
-  padding: 50px 0 0;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+  background: #0e2b58;
+  color: #cbd5e3;
+  padding: 64px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ---- 顶部 ---- */
@@ -87,36 +84,36 @@ function scrollToTop() {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 40px;
-  padding-bottom: 40px;
+  gap: 72px;
+  padding-bottom: 48px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-brand {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  min-width: 280px;
+  gap: 22px;
+  min-width: 300px;
   align-items: flex-start;
 }
 
 .footer-logo {
-  height: 40px;
+  height: 42px;
   width: auto;
   display: block;
   object-fit: contain;
 }
 
 .footer-contact-info .phone {
-  font-size: 20px;
+  font-size: 22px;
   color: #fff;
   font-weight: 600;
   text-decoration: none;
-  transition: opacity 0.3s;
+  transition: color var(--motion-fast);
 }
 
 .footer-contact-info .phone:hover {
-  opacity: 0.8;
+  color: #8fb3ff;
 }
 
 .contact-row {
@@ -127,12 +124,18 @@ function scrollToTop() {
 }
 
 .phone-icon {
-  font-size: 18px;
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: #8fb3ff;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .address {
   font-size: 13px;
-  color: #999;
+  color: #afbdd0;
   line-height: 1.6;
   margin: 0;
 }
@@ -146,39 +149,44 @@ function scrollToTop() {
 .qr-img {
   width: 100px;
   height: 100px;
-  border-radius: 4px;
+  padding: 4px;
   object-fit: cover;
   background: #fff;
 }
 
 .qr-label {
   font-size: 12px;
-  color: #aaa;
+  color: #afbdd0;
   margin-top: 6px;
 }
 
 /* ---- 导航列 ---- */
 .footer-nav {
-  display: flex;
-  gap: 48px;
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(4, minmax(100px, 1fr));
+  gap: 40px;
 }
 
 .nav-col h4 {
-  font-size: 14px;
+  font-size: 15px;
   color: #fff;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   font-weight: 600;
 }
 
 .nav-col ul li {
-  margin-bottom: 10px;
+  margin-bottom: 11px;
 }
 
 .nav-col ul li a {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
   font-size: 13px;
-  color: #999;
+  color: #b6c3d4;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color var(--motion-fast);
 }
 
 .nav-col ul li a:hover {
@@ -187,18 +195,19 @@ function scrollToTop() {
 
 /* ---- 底部版权 ---- */
 .footer-bottom {
-  padding: 20px 0;
+  min-height: 72px;
+  padding: 18px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
-  color: #666;
+  color: #96a7bd;
 }
 
 .footer-bottom a {
-  color: #666;
+  color: #96a7bd;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: color var(--motion-fast);
 }
 
 .footer-bottom a:hover {
@@ -211,8 +220,9 @@ function scrollToTop() {
   }
 
   .footer-nav {
-    flex-wrap: wrap;
-    gap: 24px 40px;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 24px;
   }
 
   .footer-bottom {
@@ -220,5 +230,10 @@ function scrollToTop() {
     gap: 8px;
     text-align: center;
   }
+}
+
+@media (max-width: 480px) {
+  .footer { padding-top: 48px; }
+  .footer-brand { min-width: 0; }
 }
 </style>

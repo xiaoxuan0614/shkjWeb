@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="solution-detail-page">
     <!-- Hero Banner -->
     <section class="detail-hero">
       <div class="detail-hero-bg"></div>
       <div class="detail-hero-content">
         <h1>{{ detail.title }}</h1>
-        <h2>{{ detail.subtitle }}</h2>
+        <p class="detail-subtitle">{{ detail.subtitle }}</p>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt;
@@ -18,7 +18,7 @@
     <section class="detail-section intro-section">
       <div class="container">
         <div class="section-label">INTRODUCTION</div>
-        <h3 class="section-title">方案简介</h3>
+        <h2 class="section-title">方案简介</h2>
         <p class="section-desc">{{ detail.intro }}</p>
       </div>
     </section>
@@ -27,11 +27,11 @@
     <section class="detail-section value-section">
       <div class="container">
         <div class="section-label">VALUE</div>
-        <h3 class="section-title">方案价值</h3>
+        <h2 class="section-title">方案价值</h2>
         <div class="value-grid">
           <div v-for="(item, i) in detail.values" :key="i" class="value-card">
-            <div class="value-icon">{{ item.icon }}</div>
-            <h4>{{ item.title }}</h4>
+            <div class="value-icon" aria-hidden="true">{{ item.icon }}</div>
+            <h3>{{ item.title }}</h3>
             <p>{{ item.desc }}</p>
           </div>
         </div>
@@ -42,21 +42,24 @@
     <section class="detail-section func-section">
       <div class="container">
         <div class="section-label">FEATURES</div>
-        <h3 class="section-title">核心功能</h3>
+        <h2 class="section-title">核心功能</h2>
 
         <!-- 功能 Tab 导航 -->
-        <div class="func-tabs">
-          <div
+        <div class="func-tabs" role="tablist" aria-label="核心功能切换">
+          <button
             v-for="(tab, i) in detail.features"
             :key="tab.title"
+            type="button"
+            role="tab"
             :class="['func-tab', { active: activeFeature === i }]"
+            :aria-selected="activeFeature === i"
             @click="activeFeature = i"
           >
             <div class="func-tab-num">{{ String(i + 1).padStart(2, '0') }}</div>
             <div class="func-tab-info">
               <span class="func-tab-title">{{ tab.title }}</span>
             </div>
-          </div>
+          </button>
         </div>
 
         <!-- 功能内容区 -->
@@ -64,20 +67,22 @@
           <div
             v-for="(block, i) in detail.features"
             :key="block.title"
+            role="tabpanel"
             :class="['func-content-panel', { active: activeFeature === i }]"
+            :aria-hidden="activeFeature !== i"
           >
             <div class="func-content-left">
               <div class="func-content-img">
-                <img v-img-oss :src="block.image" :alt="block.title" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='280px'">
+                <img v-img-oss :src="block.image" :alt="block.title" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='280px'">
               </div>
             </div>
             <div class="func-content-right">
-              <h4>{{ block.title }}</h4>
+              <h3>{{ block.title }}</h3>
               <div class="func-points">
                 <div v-for="(item, j) in block.items" :key="j" class="func-point">
                   <div class="point-marker"></div>
                   <div class="point-text">
-                    <h5>{{ item.title }}</h5>
+                    <h4>{{ item.title }}</h4>
                     <p>{{ item.desc }}</p>
                   </div>
                 </div>
@@ -100,12 +105,12 @@
     <section class="detail-section cases-section">
       <div class="container">
         <div class="section-label">CASES</div>
-        <h3 class="section-title">相关案例</h3>
+        <h2 class="section-title">相关案例</h2>
         <div class="cases-grid">
-          <div v-for="(item, i) in relatedCases.slice(0,3)" :key="item.id" class="case-card" @click="goToCase(item.id)">
-            <img v-img-oss :src="item.coverImage" :alt="item.title" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)'">
+          <router-link v-for="item in relatedCases.slice(0,3)" :key="item.id" :to="`/cases/${item.id}`" class="case-card">
+            <img v-img-oss :src="item.coverImage" :alt="item.title" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)'">
             <div class="case-label">{{ item.title }}</div>
-          </div>
+          </router-link>
         </div>
       </div>
     </section>
@@ -113,23 +118,22 @@
     <!-- CTA -->
     <section class="detail-cta">
       <div class="container">
-        <h3>需要了解更多信息？</h3>
+        <h2>需要了解更多信息？</h2>
         <p>我们的团队将为您提供专业的解决方案咨询服务</p>
-        <a href="/contact" class="btn-cta">联系我们</a>
+        <router-link to="/contact" class="btn-cta">联系我们</router-link>
       </div>
     </section>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { solutionData } from '../data/solutions-data'
 import { caseData } from '../data/cases-data'
 
 const route = useRoute()
-const router = useRouter()
-const detail = ref({})
+const detail = ref(solutionData[route.params.id])
 const activeFeature = ref(0)
 
 // 根据当前解决方案的 id，关联对应的成功案例
@@ -138,18 +142,10 @@ const relatedCases = computed(() => {
   return caseData.filter(c => c.solutionCategory === solutionId)
 })
 
-function goToCase(id) {
-  router.push(`/cases/${id}`)
-}
-
 function loadDetail(id) {
-  detail.value = solutionData[id] || solutionData['gate']
+  detail.value = solutionData[id]
   activeFeature.value = 0
 }
-
-onMounted(() => {
-  loadDetail(route.params.id)
-})
 
 // 监听路由变化，切换解决方案时重新加载
 watch(() => route.params.id, (newId) => {
@@ -189,7 +185,7 @@ watch(() => route.params.id, (newId) => {
   margin-bottom: 8px;
 }
 
-.detail-hero-content h2 {
+.detail-subtitle {
   font-size: 22px;
   font-weight: 400;
   opacity: 0.9;
@@ -282,7 +278,7 @@ watch(() => route.params.id, (newId) => {
   margin-bottom: 16px;
 }
 
-.value-card h4 {
+.value-card h3 {
   font-size: 16px;
   color: #333;
   font-weight: 600;
@@ -305,20 +301,30 @@ watch(() => route.params.id, (newId) => {
   display: flex;
   gap: 0;
   margin-bottom: 40px;
-  border-bottom: 2px solid #e8ecf1;
-  padding-bottom: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid #e1e7ef;
+  border-radius: 0;
 }
 
 .func-tab {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
+  justify-content: flex-start;
   gap: 12px;
   padding: 16px 24px;
   cursor: pointer;
+  font: inherit;
+  text-align: left;
+  color: #333;
+  background: transparent;
+  border: 0;
   border-bottom: 3px solid transparent;
+  border-radius: 0;
   margin-bottom: -2px;
-  transition: all 0.3s;
-  flex-shrink: 0;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 
 .func-tab:hover {
@@ -326,9 +332,11 @@ watch(() => route.params.id, (newId) => {
 }
 
 .func-tab.active {
-  border-bottom-color: #1a3c7c;
   color: #1a3c7c;
+  background: transparent;
+  border-bottom-color: #1a3c7c;
   font-weight: 600;
+  box-shadow: none;
 }
 
 .func-tab-num {
@@ -346,13 +354,13 @@ watch(() => route.params.id, (newId) => {
 }
 
 .func-tab.active .func-tab-num {
-  background: #1a3c7c;
   color: #fff;
+  background: #1a3c7c;
 }
 
 .func-tab-title {
   font-size: 15px;
-  color: #333;
+  color: inherit;
   transition: color 0.3s;
 }
 
@@ -408,7 +416,7 @@ watch(() => route.params.id, (newId) => {
   object-fit: cover;
 }
 
-.func-content-right h4 {
+.func-content-right h3 {
   font-size: 22px;
   color: #1a3c7c;
   font-weight: 700;
@@ -434,7 +442,7 @@ watch(() => route.params.id, (newId) => {
   flex-shrink: 0;
 }
 
-.point-text h5 {
+.point-text h4 {
   font-size: 15px;
   color: #333;
   font-weight: 600;
@@ -529,7 +537,7 @@ watch(() => route.params.id, (newId) => {
   color: #fff;
 }
 
-.detail-cta h3 {
+.detail-cta h2 {
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 12px;
@@ -557,14 +565,148 @@ watch(() => route.params.id, (newId) => {
   transform: translateY(-2px);
 }
 
+/* 该页面沿用项目最初的详情页视觉，不继承全站新版详情页覆盖层。 */
+.solution-detail-page .detail-hero {
+  min-height: 0 !important;
+  height: 360px !important;
+  padding: 0 !important;
+  background: linear-gradient(135deg, #0a1e50 0%, #1a3c7c 40%, #2d5bbf 100%) !important;
+}
+
+.solution-detail-page .detail-hero::after,
+.solution-detail-page .detail-cta::after {
+  display: none !important;
+}
+
+.solution-detail-page .detail-hero-bg {
+  opacity: 1 !important;
+}
+
+.solution-detail-page .detail-hero-content {
+  width: auto !important;
+  margin: 0 !important;
+}
+
+.solution-detail-page .detail-hero-content h1 {
+  margin: 0 0 8px !important;
+  font-size: 40px !important;
+  line-height: 1.6 !important;
+  letter-spacing: 3px !important;
+}
+
+.solution-detail-page .detail-subtitle {
+  max-width: none !important;
+  margin: 0 !important;
+  font-size: 22px !important;
+  line-height: 1.6 !important;
+  letter-spacing: normal !important;
+}
+
+.solution-detail-page .detail-section {
+  padding: 70px 0 !important;
+}
+
+.solution-detail-page .section-label {
+  color: #1a3c7c !important;
+  font-size: 11px !important;
+  letter-spacing: 3px !important;
+}
+
+.solution-detail-page .section-title {
+  color: #1a3c7c !important;
+  font-size: 26px !important;
+  line-height: 1.6 !important;
+  letter-spacing: normal !important;
+}
+
+.solution-detail-page .value-section {
+  background: #f5f7fb !important;
+}
+
+.solution-detail-page .cases-section {
+  background: #fff !important;
+}
+
+.solution-detail-page .value-card {
+  border: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.solution-detail-page .value-card:hover {
+  box-shadow: 0 8px 25px rgba(26, 60, 124, 0.1) !important;
+  transform: translateY(-4px) !important;
+}
+
+.solution-detail-page .value-icon {
+  color: inherit !important;
+  background: transparent !important;
+  font-size: 36px !important;
+  font-weight: inherit !important;
+}
+
+.solution-detail-page .func-tab {
+  min-height: 0 !important;
+  border-radius: 0 !important;
+}
+
+.solution-detail-page .func-content-area {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.solution-detail-page .case-card {
+  height: auto !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+}
+
+.solution-detail-page .case-card:hover {
+  box-shadow: 0 8px 25px rgba(26, 60, 124, 0.15) !important;
+}
+
+.solution-detail-page .detail-cta {
+  padding: 60px 0 !important;
+  background: linear-gradient(135deg, #0a1e50, #1a3c7c) !important;
+}
+
+.solution-detail-page .btn-cta {
+  min-height: 0 !important;
+  padding: 12px 36px !important;
+  color: #1a3c7c !important;
+  background: #fff !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+}
+
+.solution-detail-page .btn-cta:hover {
+  color: #1a3c7c !important;
+  background: #e8f0fe !important;
+}
+
 /* ---- 响应式 ---- */
 @media (max-width: 768px) {
   .value-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   .func-tabs {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .func-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .func-tab {
+    flex: 0 0 auto;
+    min-width: 160px;
+    scroll-snap-align: start;
   }
   .func-content-panel.active {
     grid-template-columns: 1fr;
@@ -575,11 +717,11 @@ watch(() => route.params.id, (newId) => {
   .cases-grid {
     grid-template-columns: 1fr;
   }
-  .detail-hero {
-    height: 260px;
+  .solution-detail-page .detail-hero {
+    height: 260px !important;
   }
-  .detail-hero-content h1 {
-    font-size: 28px;
+  .solution-detail-page .detail-hero-content h1 {
+    font-size: 28px !important;
   }
 }
 </style>

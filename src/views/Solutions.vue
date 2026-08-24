@@ -4,8 +4,8 @@
     <section class="solution-hero">
       <div class="solution-hero-bg"></div>
       <div class="solution-hero-content">
-        <h1>SOLUTIONS</h1>
-        <h2>解决方案</h2>
+        <p class="hero-en">SOLUTIONS</p>
+        <h1>智慧港口与堆场解决方案</h1>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt; 解决方案
@@ -15,22 +15,34 @@
     <!-- 4大方案模块 -->
     <section class="solution-modules">
       <div class="container">
+        <AboutSectionLead
+          english="Core Solutions"
+          title="覆盖场站全流程的数字化能力"
+          summary="从前端识别、业务运营到安全监管和基础设施，按场景组合落地。"
+        />
         <div class="module-grid">
-          <div
+          <router-link
             v-for="module in solutionModules"
             :key="module.id"
+            :to="`/solutions/${module.id}`"
             class="module-card"
-            @click="goToDetail(module.id)"
           >
             <div class="module-card-img">
-              <img v-img-oss :src="module.image" :alt="module.title" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='200px'">
+              <img
+                v-img-oss
+                :src="module.image"
+                :alt="module.title"
+                :style="{ objectPosition: module.imagePosition }"
+                loading="lazy"
+                onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='200px'"
+              >
             </div>
             <div class="module-card-body">
               <h3>{{ module.title }}</h3>
               <p>{{ module.desc }}</p>
               <span class="module-link">了解详情 →</span>
             </div>
-          </div>
+          </router-link>
         </div>
       </div>
     </section>
@@ -38,9 +50,7 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
+import AboutSectionLead from '../components/AboutSectionLead.vue'
 
 const solutionModules = [
   {
@@ -48,30 +58,31 @@ const solutionModules = [
     title: '智能闸口系统',
     desc: '依托 AI 视觉识别道闸联动，实现车辆无人无感通行，自动核验，降本增效',
     image: '/images/case/gate3.jpg',
+    imagePosition: 'center 55%',
   },
   {
     id: 'yard',
     title: '数字场站建设',
     desc: '场站核心运营中枢，覆盖场站全业务，智能调度分配，可视化场位管理',
     image: '/images/case/yard2.jpg',
+    imagePosition: 'center 48%',
   },
   {
     id: 'safety',
     title: '安全合规监管',
     desc: '全景安全监控、风险预警、合规审计，多模态定位，操作可溯',
     image: '/images/case/safety.jpg',
+    imagePosition: 'center 61%',
   },
   {
     id: 'hardware',
     title: '硬件网络基建',
     desc: 'IoT设备接入、5G网络覆盖、边缘计算支持，工业级终端稳定运行',
     image: '/images/case/hardware.png',
+    imagePosition: 'center 58%',
   },
 ]
 
-function goToDetail(id) {
-  router.push(`/solutions/${id}`)
-}
 </script>
 
 <style scoped>
@@ -99,14 +110,14 @@ function goToDetail(id) {
   z-index: 1;
 }
 
-.solution-hero-content h1 {
+.solution-hero-content .hero-en {
   font-size: 48px;
   font-weight: 700;
   letter-spacing: 4px;
   margin-bottom: 8px;
 }
 
-.solution-hero-content h2 {
+.solution-hero-content h1 {
   font-size: 28px;
   font-weight: 400;
   opacity: 0.9;
@@ -144,6 +155,8 @@ function goToDetail(id) {
 }
 
 .module-card {
+  display: flex;
+  flex-direction: column;
   background: var(--white);
   border-radius: 12px;
   overflow: hidden;
@@ -171,6 +184,9 @@ function goToDetail(id) {
 }
 
 .module-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 24px;
 }
 
@@ -193,6 +209,7 @@ function goToDetail(id) {
 }
 
 .module-link {
+  margin-top: auto;
   font-size: 14px;
   color: var(--brand-primary);
   font-weight: 500;

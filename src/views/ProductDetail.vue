@@ -5,7 +5,7 @@
       <div class="detail-hero-bg"></div>
       <div class="detail-hero-content">
         <h1>{{ detail.name }}</h1>
-        <h2>{{ detail.subtitle }}</h2>
+        <p class="detail-subtitle">{{ detail.subtitle }}</p>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt;
@@ -54,7 +54,7 @@
             <!-- 产品图片 -->
             <div class="product-showcase">
               <div class="showcase-img">
-                <img v-img-oss :src="detail.image" :alt="detail.name" onerror="this.style.background='linear-gradient(135deg,#e8f0fe,#d0e2ff)';this.style.minHeight='300px'">
+                <img v-img-oss :src="detail.image" :alt="detail.name" width="720" height="420" fetchpriority="high" onerror="this.style.background='linear-gradient(135deg,#e8f0fe,#d0e2ff)';this.style.minHeight='300px'">
               </div>
             </div>
 
@@ -67,9 +67,16 @@
             </div>
 
             <!-- 产品规格 -->
+            <div class="product-intro" v-if="detail.intro">
+              <div class="section-label">INTRODUCTION</div>
+              <h2 class="section-title">产品简介</h2>
+              <p>{{ detail.intro }}</p>
+            </div>
+
+            <!-- 产品规格 -->
             <div class="spec-section">
               <div class="section-label">SPECIFICATIONS</div>
-              <h3 class="section-title">产品规格</h3>
+              <h2 class="section-title">产品规格</h2>
               <table class="spec-table">
                 <tbody>
                   <tr v-for="(spec, i) in detail.specs" :key="i">
@@ -83,12 +90,12 @@
             <!-- 核心特点 -->
             <div class="features-section">
               <div class="section-label">FEATURES</div>
-              <h3 class="section-title">核心特点</h3>
+              <h2 class="section-title">核心特点</h2>
               <div class="feature-list">
                 <div v-for="(feature, i) in detail.features" :key="i" class="feature-item">
                   <div class="feature-num">{{ String(i + 1).padStart(2, '0') }}</div>
                   <div class="feature-content">
-                    <h4>{{ feature.title }}</h4>
+                    <h3>{{ feature.title }}</h3>
                     <p>{{ feature.desc }}</p>
                   </div>
                 </div>
@@ -102,7 +109,7 @@
     <!-- CTA -->
     <section class="detail-cta">
       <div class="container">
-        <h3>需要了解更多信息？</h3>
+        <h2>需要了解更多信息？</h2>
         <p>我们的团队将为您提供专业的产品咨询服务</p>
         <router-link to="/contact" class="btn-cta">联系我们</router-link>
       </div>
@@ -111,14 +118,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { productData } from '../data/products-data'
 
 const route = useRoute()
-const router = useRouter()
-const detail = ref({})
-const currentProductId = ref('')
+const detail = ref(productData.details[route.params.id])
+const currentProductId = ref(route.params.id)
 
 const categories = computed(() => productData.categories)
 
@@ -136,10 +142,6 @@ function loadDetail(id) {
   currentProductId.value = id
   detail.value = productData.details[id] || {}
 }
-
-onMounted(() => {
-  loadDetail(route.params.id)
-})
 
 watch(() => route.params.id, (newId) => {
   loadDetail(newId)
@@ -178,7 +180,7 @@ watch(() => route.params.id, (newId) => {
   margin-bottom: 8px;
 }
 
-.detail-hero-content h2 {
+.detail-subtitle {
   font-size: 22px;
   font-weight: 400;
   opacity: 0.9;
@@ -211,6 +213,9 @@ watch(() => route.params.id, (newId) => {
   padding: 60px 0;
   background: #fff;
 }
+
+.product-intro { margin-bottom: 46px; }
+.product-intro p { color: #555; font-size: 16px; line-height: 1.9; }
 
 .detail-layout {
   display: grid;
@@ -451,7 +456,7 @@ watch(() => route.params.id, (newId) => {
   flex-shrink: 0;
 }
 
-.feature-content h4 {
+.feature-content h3 {
   font-size: 16px;
   color: #333;
   font-weight: 600;
@@ -472,7 +477,7 @@ watch(() => route.params.id, (newId) => {
   color: #fff;
 }
 
-.detail-cta h3 {
+.detail-cta h2 {
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 12px;

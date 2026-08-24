@@ -1,31 +1,32 @@
 <template>
   <div>
-      <div class="page-hero">
+      <div class="page-hero about-hero">
         <div class="page-hero-bg"></div>
         <div class="page-hero-overlay"></div>
         <div class="page-hero-content">
-          <h1>ABOUT US</h1>
-          <h2>关于首汇</h2>
+          <p class="hero-en">ABOUT US</p>
+          <h1>{{ currentLabel }}</h1>
         </div>
-        <div class="page-breadcrumb">
+        <nav class="page-breadcrumb" aria-label="面包屑导航">
           <router-link to="/">首页</router-link> &gt;
           <router-link to="/about">关于我们</router-link> &gt;
           <span>{{ currentLabel }}</span>
-        </div>
-        <div class="page-tabs">
-          <div class="page-tabs-inner">
-            <router-link
-              v-for="tab in tabs"
-              :key="tab.path"
-              :to="tab.link"
-              class="page-tab"
-              :class="{ active: $route.path === tab.link || ($route.path === '/about' && tab.path === '') }"
-            >
-              {{ tab.label }}
-            </router-link>
-          </div>
-        </div>
+        </nav>
       </div>
+
+      <nav class="page-tabs" aria-label="关于首汇栏目">
+        <div class="page-tabs-inner">
+          <router-link
+            v-for="tab in tabs"
+            :key="tab.path"
+            :to="tab.link"
+            class="page-tab"
+            :class="{ active: $route.path === tab.link || ($route.path === '/about' && tab.path === '') }"
+          >
+            {{ tab.label }}
+          </router-link>
+        </div>
+      </nav>
 
     <!-- 子页面内容 -->
     <router-view />
@@ -81,14 +82,14 @@ const currentLabel = computed(() => {
   z-index: 1;
 }
 
-.page-hero-content h1 {
+.page-hero-content .hero-en {
   font-size: 42px;
   font-weight: 700;
   letter-spacing: 3px;
   margin-bottom: 8px;
 }
 
-.page-hero-content h2 {
+.page-hero-content h1 {
   font-size: 26px;
   font-weight: 400;
   opacity: 0.9;
@@ -113,12 +114,10 @@ const currentLabel = computed(() => {
 }
 
 .page-tabs {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  background: rgba(0,0,0,0.15);
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .page-tabs-inner {
@@ -131,18 +130,20 @@ const currentLabel = computed(() => {
 }
 
 .page-tab {
-  padding: 14px 32px;
+  min-height: 58px;
+  padding: 18px 32px 16px;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  transition: all 0.3s;
+  color: var(--text-secondary);
+  font-weight: 600;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
   border-bottom: 2px solid transparent;
 }
 
 .page-tab:hover,
 .page-tab.active {
-  color: #fff;
-  border-bottom-color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  color: var(--brand-primary);
+  border-bottom-color: var(--brand-light);
+  background: var(--brand-soft);
 }
 
 @media (max-width: 768px) {
@@ -161,7 +162,10 @@ const currentLabel = computed(() => {
     bottom: 16px;
   }
   .page-tab {
-    padding: 12px 16px;
+    flex: 1;
+    min-height: 52px;
+    padding: 15px 10px 13px;
+    text-align: center;
     font-size: 13px;
   }
 }
@@ -177,7 +181,7 @@ const currentLabel = computed(() => {
     font-size: 14px;
   }
   .page-tab {
-    padding: 10px 12px;
+    padding-inline: 6px;
     font-size: 12px;
   }
 }

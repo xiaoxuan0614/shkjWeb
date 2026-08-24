@@ -4,6 +4,9 @@ node_modules/
 # 构建产物
 dist/
 dist-ssr/
+.seo-dist/
+deploy/packages/
+tmp/
 
 # 环境变量
 .env
@@ -14,4 +17,4 @@ dist-ssr/
 *.local
 
 # 系统文件
-.DS_Store 
+.DS_Store

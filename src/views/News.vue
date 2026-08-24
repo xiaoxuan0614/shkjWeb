@@ -5,8 +5,8 @@
       <div class="page-hero-bg"></div>
       <div class="page-hero-overlay"></div>
       <div class="page-hero-content">
-        <h1>NEWS</h1>
-        <h2>新闻中心</h2>
+        <p class="hero-en">NEWS</p>
+        <h1>新闻中心与技术文章</h1>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt; 新闻中心
@@ -15,10 +15,12 @@
 
     <!-- 新闻列表 -->
     <section class="news-page-layout">
-      <div class="container" style="padding-top:40px;padding-bottom:80px;">
-        <div class="news-header">
-          <h3>资讯列表</h3>
-        </div>
+      <div class="container listing-container">
+        <AboutSectionLead
+          english="Insights &amp; News"
+          title="公司动态与行业洞察"
+          summary="关注项目实践、产品技术和集装箱物流数字化趋势。"
+        />
 
         <!-- 新闻卡片列表 -->
         <div class="news-grid">
@@ -30,12 +32,12 @@
           >
             <div>
             <!-- <img v-if="latestNews[0].images && latestNews[0].images" :src="latestNews[0].images" :alt="latestNews[0].title" class="news-card-img" onerror="this.style.display='none'"> -->
-            <img v-if="article.cover" referrerpolicy="no-referrer" :src="article.cover" :alt="article.title" class="news-card-img" onerror="this.style.display='none'">
+            <img v-if="article.cover" referrerpolicy="no-referrer" :src="normalizeArticleUrl(article.cover)" :alt="article.title" class="news-card-img" loading="lazy" onerror="this.style.display='none'">
           </div>
             <div class="news-card-accent" :class="'accent-' + ((article.id || index) % 4)">
             </div>
             <div class="news-card-body">
-              <h4>{{ article.title }}</h4>
+              <h3>{{ article.title }}</h3>
               <p>{{ article.digest }}</p>
               <div class="news-card-meta">
                 <span class="news-item-date">{{ formatDate(article.publishTime) }}</span>
@@ -45,16 +47,25 @@
           </router-link>
         </div>
 
+        <div v-if="articles.length === 0" class="news-empty">
+          <h2>暂时没有可展示的资讯</h2>
+          <p>您可以稍后刷新页面，或先查看我们的解决方案。</p>
+          <router-link to="/solutions">解决方案</router-link>
+        </div>
+
         <!-- 分页 -->
         <div class="pagination" v-if="totalPages > 1">
-          <div class="pagination-btn pagination-btn--prev" :class="{ 'disabled': currentPage === 0 }" @click="goPage(currentPage)">‹</div>
-          <div
+          <button type="button" class="pagination-btn pagination-btn--prev" :disabled="currentPage === 0" aria-label="上一页" @click="goPage(currentPage)">‹</button>
+          <button
             v-for="page in visiblePages"
             :key="page"
+            type="button"
             :class="['pagination-btn', { active: currentPage + 1 === page }]"
+            :aria-current="currentPage + 1 === page ? 'page' : undefined"
+            :aria-label="`前往第 ${page} 页`"
             @click.stop="goPage(page)"
-          >{{ page }}</div>
-          <div class="pagination-btn pagination-btn--next" :class="{ 'disabled': currentPage + 1 >= totalPages }" @click="goPage(currentPage + 2)">›</div>
+          >{{ page }}</button>
+          <button type="button" class="pagination-btn pagination-btn--next" :disabled="currentPage + 1 >= totalPages" aria-label="下一页" @click="goPage(currentPage + 2)">›</button>
         </div>
       </div>
     </section>
@@ -62,8 +73,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onServerPrefetch } from 'vue'
+import AboutSectionLead from '../components/AboutSectionLead.vue'
 import request from '../utils/request'
+import { normalizeArticleUrl } from '../utils/articleUrl'
 
 const articles = ref([])
 const totalPages = ref(0)
@@ -150,8 +163,10 @@ function formatDate(time) {
 }
 
 onMounted(() => {
-  loadArticles()
+  if (articles.value.length === 0) loadArticles()
 })
+
+onServerPrefetch(loadArticles)
 </script>
 
 <style scoped>
@@ -176,8 +191,8 @@ onMounted(() => {
 }
 
 .page-hero-content { position: relative; z-index: 1; }
-.page-hero-content h1 { font-size: 42px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; }
-.page-hero-content h2 { font-size: 26px; font-weight: 400; opacity: 0.9; }
+.page-hero-content .hero-en { font-size: 42px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; }
+.page-hero-content h1 { font-size: 26px; font-weight: 400; opacity: 0.9; }
 
 .page-breadcrumb {
   position: absolute;
@@ -198,14 +213,6 @@ onMounted(() => {
 }
 
 .news-page-layout { background: var(--white); }
-
-.news-header h3 {
-  font-size: 16px;
-  color: var(--brand-primary);
-  padding-bottom: 12px;
-  border-bottom: 2px dashed #ddd;
-  margin-bottom: 24px;
-}
 
 /* ---- 新闻卡片网格 ---- */
 .news-grid {
@@ -242,7 +249,7 @@ onMounted(() => {
   padding: 20px;
 }
 
-.news-card-body h4 {
+.news-card-body h3 {
   color: var(--text-primary);
   margin: 4px 0;
   /* 核心：行高1.3em，固定2行总高度 */
@@ -256,6 +263,17 @@ onMounted(() => {
   font-weight: bold;
   unicode-bidi: isolate;
 }
+
+.news-empty {
+  padding: 64px 24px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--border-color);
+}
+
+.news-empty h2 { color: var(--text-primary); font-size: 22px; }
+.news-empty p { margin-top: 8px; color: var(--text-secondary); }
+.news-empty a { display: inline-flex; margin-top: 22px; padding: 11px 20px; color: #fff; background: var(--brand-light); }
 
 .news-card-body p {
   font-size: 13px;

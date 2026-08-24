@@ -1,33 +1,36 @@
 <template>
   <section class="history-section">
     <div class="container">
-      <div class="history-title-area">
-        <h2>大事记</h2>
-        <div class="en-title">SHKJ HISTORY</div>
-      </div>
+      <AboutSectionLead
+        english="SHKJ History"
+        title="发展大事记"
+        summary="回顾首汇科技从成立至今的重要节点"
+      />
 
       <!-- 年份切换区：左右箭头 + 5个年份卡片 -->
       <div class="timeline-slider">
-        <button class="slider-arrow slider-arrow--left" :disabled="activeYear === newestYear" @click="slideLeft">
+        <button type="button" class="slider-arrow slider-arrow--left" aria-label="查看更新年份" :disabled="activeYear === newestYear" @click="slideLeft">
           <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
         </button>
 
         <div class="timeline-viewport">
           <div class="timeline-track">
-            <div
+            <button
               v-for="(year, i) in visibleYears"
               :key="year"
+              type="button"
               class="timeline-year"
               :class="{ active: activeYear === String(year) }"
+              :aria-pressed="activeYear === String(year)"
               @click="pickYear(year)"
             >
               <div class="year-num">{{ year }}</div>
               <div class="dot"></div>
-            </div>
+            </button>
           </div>
         </div>
 
-        <button class="slider-arrow slider-arrow--right" :disabled="activeYear === oldestYear" @click="slideRight">
+        <button type="button" class="slider-arrow slider-arrow--right" aria-label="查看更早年份" :disabled="activeYear === oldestYear" @click="slideRight">
           <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
         </button>
       </div>
@@ -60,6 +63,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import AboutSectionLead from '../components/AboutSectionLead.vue'
 import { timelineData } from '../data/timeline-data'
 
 const VISIBLE = 5
@@ -118,56 +122,40 @@ function slideRight() {
 
 <style scoped>
 .history-section {
-  padding: 60px 0;
-  background: #fff;
-}
-
-.history-title-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 40px;
-}
-
-.history-title-area h2 {
-  font-size: 32px;
-  color: #1a3c7c;
-  font-weight: 700;
-}
-
-.en-title {
-  font-size: 48px;
-  color: #f0f2f5;
-  font-weight: 700;
-  letter-spacing: 4px;
+  padding: 88px 0 104px;
+  background: var(--bg-light);
 }
 
 /* ---- 年份滑块 ---- */
 .timeline-slider {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 40px;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 22px 24px;
+  /* background: #fff; */
+  /* border: 1px solid var(--border-color); */
+  border-radius: 12px;
 }
 
 .slider-arrow {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  border: 1px solid #d0d5dc;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  transition: all 0.3s;
-  color: #666;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  color: var(--text-secondary);
 }
 
 .slider-arrow:hover:not(:disabled) {
-  background: #1a3c7c;
-  border-color: #1a3c7c;
+  background: var(--brand-light);
+  border-color: var(--brand-light);
   color: #fff;
 }
 
@@ -203,8 +191,14 @@ function slideRight() {
 }
 
 .timeline-year {
+  min-height: 62px;
+  padding: 6px;
   text-align: center;
   cursor: pointer;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  font: inherit;
   position: relative;
   z-index: 1;
   flex: 1;
@@ -216,16 +210,16 @@ function slideRight() {
 }
 
 .timeline-year .year-num {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
-  color: #999;
+  color: var(--text-muted);
   margin-bottom: 12px;
   transition: color 0.3s, font-size 0.3s;
 }
 
 .timeline-year.active .year-num {
-  color: #1a3c7c;
-  font-size: 32px;
+  color: var(--brand-primary);
+  font-size: 28px;
 }
 
 .timeline-year .dot {
@@ -238,8 +232,8 @@ function slideRight() {
 }
 
 .timeline-year.active .dot {
-  background: #1a3c7c;
-  box-shadow: 0 0 0 4px rgba(26, 60, 124, 0.15);
+  background: var(--brand-light);
+  box-shadow: 0 0 0 4px rgba(36, 75, 130, 0.14);
 }
 
 /* ---- 事件面板 ---- */
@@ -248,31 +242,34 @@ function slideRight() {
 }
 
 .timeline-event.active {
-  display: block;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 56px;
+  padding: 44px 48px;
 }
 
 .timeline-event-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 30px;
+  display: block;
 }
 
 .timeline-event-header h3 {
-  font-size: 22px;
-  color: #333;
+  margin-top: 10px;
+  color: var(--text-primary);
+  font-size: 20px;
   font-weight: 600;
 }
 
 .year-big {
-  font-size: 48px;
+  color: var(--brand-primary);
+  font-size: 54px;
   font-weight: 700;
-  color: #1a3c7c;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .timeline-list {
   position: relative;
-  padding-left: 40px;
+  padding-left: 36px;
 }
 
 .timeline-list::before {
@@ -282,57 +279,56 @@ function slideRight() {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #e8e8e8;
+  background: var(--border-color);
 }
 
 .timeline-item {
   position: relative;
-  padding: 16px 0;
+  padding: 4px 0 28px;
 }
+
+.timeline-item:last-child { padding-bottom: 4px; }
 
 .timeline-item::before {
   content: "";
   position: absolute;
-  left: -33px;
-  top: 24px;
+  left: -31px;
+  top: 8px;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #1a3c7c;
+  background: var(--brand-light);
   border: 3px solid #fff;
-  box-shadow: 0 0 0 2px #1a3c7c;
+  box-shadow: 0 0 0 2px var(--brand-light);
 }
 
 .date-badge {
   display: inline-block;
   font-size: 13px;
-  color: #1a3c7c;
-  background: #e8f0fe;
-  padding: 4px 14px;
-  border-radius: 20px;
+  color: var(--brand-primary);
+  background: var(--brand-soft);
+  padding: 5px 10px;
+  border-radius: 6px;
   margin-bottom: 8px;
 }
 
 .timeline-item p {
   font-size: 14px;
-  color: #555;
-  line-height: 1.8;
+  color: var(--text-secondary);
+  line-height: 1.85;
 }
 
 /* ========== 响应式 ========== */
 @media (max-width: 768px) {
-  .history-title-area {
-    flex-direction: column;
-    align-items: flex-start;
+  .history-section { padding: 64px 0 76px; }
+  .timeline-slider {
     gap: 8px;
+    padding: 16px 12px;
   }
-  .en-title {
-    font-size: 24px;
-  }
-  .timeline-event-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+  .timeline-event.active {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 24px;
   }
   .year-big {
     font-size: 36px;
@@ -348,17 +344,11 @@ function slideRight() {
 }
 
 @media (max-width: 480px) {
-  .history-title-area h2 {
-    font-size: 24px;
-  }
-  .en-title {
-    font-size: 20px;
-  }
   .timeline-year .year-num {
-    font-size: 18px;
+    font-size: 15px;
   }
   .timeline-year.active .year-num {
-    font-size: 24px;
+    font-size: 20px;
   }
   .year-big {
     font-size: 30px;

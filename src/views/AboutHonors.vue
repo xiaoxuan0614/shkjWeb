@@ -1,22 +1,23 @@
 <template>
   <section class="honors-section">
     <div class="container">
-      <!-- 标题 -->
-      <div class="honors-header">
-        <h2>资质荣誉</h2>
-        <div class="honors-line"></div>
-      </div>
+      <AboutSectionLead
+        english="Qualifications &amp; Honors"
+        title="资质荣誉"
+        summary="以自主技术、规范交付和实际项目成果为基础，持续积累企业资质与行业认可。"
+      />
 
       <!-- 奖杯 + 证书墙 -->
       <div class="honors-content">
         <!-- 左侧奖杯 -->
         <div class="honors-trophy">
-          <img v-img-oss :src="trophySrc" alt="冠军奖杯" class="trophy-img">
+          <img v-img-oss :src="trophySrc" alt="首汇科技所获荣誉奖杯" class="trophy-img" loading="lazy">
+          <p>荣誉见证</p>
         </div>
 
         <!-- 右侧证书墙 -->
         <div class="honors-cert-wall">
-          <img v-img-oss :src="certWallSrc" alt="资质证书墙" class="cert-wall-img">
+          <img v-img-oss :src="certWallSrc" alt="首汇科技资质证书墙" class="cert-wall-img" loading="lazy">
         </div>
       </div>
     </div>
@@ -25,6 +26,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import AboutSectionLead from '../components/AboutSectionLead.vue'
 
 const trophySrc = ref('/images/case/chan.png')
 const certWallSrc = ref('/images/case/cert-wall.jpg')
@@ -32,68 +34,65 @@ const certWallSrc = ref('/images/case/cert-wall.jpg')
 
 <style scoped>
 .honors-section {
-  padding: 60px 0 80px;
-  background: #fff;
-}
-
-.honors-header {
-  margin-bottom: 50px;
-}
-
-.honors-header h2 {
-  font-size: 32px;
-  color: #333;
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-.honors-line {
-  width: 40px;
-  height: 2px;
-  background: #1a3c7c;
+  padding: 88px 0 104px;
+  background: var(--bg-light);
 }
 
 .honors-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 60px;
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 32px;
 }
 
 .honors-trophy {
-  flex-shrink: 0;
-  width: 200px;
   display: flex;
+  min-height: 420px;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  padding: 32px;
+  /* background: #fff; */
+  /* border: 1px solid var(--border-color); */
+  border-radius: 12px;
 }
 
 .trophy-img {
-  width: 100%;
+  width: min(100%, 170px);
   height: auto;
-  filter: drop-shadow(0 8px 20px rgba(212, 168, 67, 0.3));
+  filter: drop-shadow(0 12px 18px rgba(84, 66, 25, 0.2));
+}
+
+.honors-trophy p {
+  margin-top: 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .honors-cert-wall {
-  flex: 1;
   border-radius: 12px;
   overflow: hidden;
-  background: linear-gradient(135deg, #f9f6ee, #f0e6c8);
-  min-height: 400px;
+  background: #fff;
+  min-height: 420px;
+  /* border: 1px solid var(--border-color); */
 }
 
 .cert-wall-img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {
+  .honors-section { padding: 64px 0 76px; }
   .honors-content {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
   .honors-trophy {
-    width: 150px;
+    min-height: 280px;
   }
   .honors-cert-wall {
     min-height: auto;

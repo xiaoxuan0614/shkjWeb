@@ -1,400 +1,521 @@
 <template>
-  <div>
-    <!-- Hero Banner -->
-    <section class="product-hero">
-      <div class="product-hero-bg"></div>
-      <div class="product-hero-content">
-        <h1>PRODUCTS</h1>
-        <h2>产品清单</h2>
+  <main class="products-page">
+    <section class="product-hero page-hero">
+      <div class="page-hero-bg" aria-hidden="true"></div>
+      <div class="page-hero-overlay" aria-hidden="true"></div>
+      <div class="page-hero-content">
+        <p class="hero-en">PRODUCTS</p>
+        <h1>产品清单</h1>
       </div>
-      <div class="page-breadcrumb">
-        <router-link to="/">首页</router-link> &gt; 产品清单
-      </div>
+      <nav class="page-breadcrumb" aria-label="面包屑导航">
+        <router-link to="/">首页</router-link>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" /></svg>
+        <span aria-current="page">产品清单</span>
+      </nav>
     </section>
 
-    <!-- 产品卡片列表 -->
-    <section class="product-list-section">
+    <section class="catalog-nav-section" aria-labelledby="catalog-heading">
       <div class="container">
-        <div class="product-grid">
-          <div
+        <AboutSectionLead
+          english="Product Range"
+          title="按设备类型快速选型"
+          summary="选择产品类别，查看对应设备型号与核心定位。"
+          heading-id="catalog-heading"
+        />
+
+        <nav class="category-nav" aria-label="产品分类">
+          <a
             v-for="(category, index) in categories"
             :key="category.id"
-            class="product-category-card"
-            @click="goToCategory(category)"
+            :href="`#${category.id}`"
+            class="category-nav-item"
           >
-            <div class="product-category-icon">
-              <svg v-if="category.id === 'vehicle-pc'" viewBox="0 0 64 64" width="64" height="64">
-                <rect x="6" y="14" width="52" height="32" rx="3" fill="#1a3c7c"/>
-                <rect x="10" y="18" width="44" height="24" rx="1" fill="#fff" opacity="0.9"/>
-                <rect x="24" y="46" width="16" height="4" rx="1" fill="#1a3c7c"/>
-                <circle cx="32" cy="30" r="4" fill="#1a3c7c" opacity="0.3"/>
-                <line x1="16" y1="24" x2="22" y2="24" stroke="#1a3c7c" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="16" y1="28" x2="20" y2="28" stroke="#1a3c7c" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="42" y1="24" x2="48" y2="24" stroke="#1a3c7c" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="42" y1="28" x2="48" y2="28" stroke="#1a3c7c" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-              <svg v-else-if="category.id === 'mobile-computer'" viewBox="0 0 64 64" width="64" height="64">
-                <rect x="20" y="6" width="24" height="48" rx="4" fill="#1a3c7c"/>
-                <rect x="24" y="12" width="16" height="22" rx="1" fill="#fff" opacity="0.9"/>
-                <rect x="26" y="38" width="12" height="10" rx="1" fill="#fff" opacity="0.5"/>
-                <circle cx="32" cy="43" r="2" fill="#1a3c7c"/>
-                <rect x="28" y="50" width="8" height="4" rx="1" fill="#1a3c7c" opacity="0.6"/>
-                <line x1="28" y1="18" x2="36" y2="18" stroke="#1a3c7c" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="28" y1="22" x2="34" y2="22" stroke="#1a3c7c" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-              <svg v-else viewBox="0 0 64 64" width="64" height="64">
-                <rect x="8" y="20" width="48" height="30" rx="3" fill="#1a3c7c"/>
-                <rect x="14" y="12" width="36" height="10" rx="2" fill="#1a3c7c" opacity="0.7"/>
-                <rect x="16" y="26" width="32" height="14" rx="1" fill="#fff" opacity="0.9"/>
-                <rect x="18" y="28" width="28" height="10" rx="1" fill="#f5f7fb"/>
-                <line x1="22" y1="32" x2="42" y2="32" stroke="#1a3c7c" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
-                <line x1="22" y1="35" x2="38" y2="35" stroke="#1a3c7c" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
-                <circle cx="50" cy="25" r="2" fill="#fff" opacity="0.6"/>
-                <rect x="12" y="52" width="40" height="4" rx="1" fill="#1a3c7c" opacity="0.4"/>
-              </svg>
-            </div>
-            <h3>{{ category.name }}</h3>
-            <p class="product-category-desc">{{category.desc}}</p>
-            <router-link
-              v-if="category.products.length > 0"
-              :to="'/products/' + category.products[0]"
-              class="product-category-link"
-            >
-              了解详情 →
-            </router-link>
-            <span v-else class="product-category-link disabled">敬请期待</span>
-          </div>
-        </div>
+            <span class="category-nav-index">0{{ index + 1 }}</span>
+            <span class="category-nav-copy">
+              <strong>{{ category.name }}</strong>
+              <small>{{ category.products.length }} 款产品</small>
+            </span>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" /></svg>
+          </a>
+        </nav>
       </div>
     </section>
 
-    <!-- 热门产品 -->
-    <section class="hot-products-section">
+    <section class="catalog-section" aria-label="全部产品">
       <div class="container">
-        <div class="section-header">
-          <div class="section-label">HOT PRODUCTS</div>
-          <h3 class="section-title">热门产品</h3>
-        </div>
-        <div class="hot-product-grid">
-          <div
-            v-for="(product, index) in hotProducts"
-            :key="index"
-            class="hot-product-card"
-            @click="goToDetail(product.id)"
-          >
-            <div class="hot-product-img">
-              <img v-img-oss :src="product.image" :alt="product.name" onerror="this.style.background='linear-gradient(135deg,#e8f0fe,#d0e2ff)';this.style.minHeight='200px'">
+        <section
+          v-for="(category, categoryIndex) in catalog"
+          :id="category.id"
+          :key="category.id"
+          class="category-section"
+        >
+          <header class="category-header">
+            <div class="category-heading">
+              <span class="category-icon" aria-hidden="true">
+                <svg v-if="category.id === 'vehicle-pc'" viewBox="0 0 48 48">
+                  <rect x="5" y="9" width="38" height="27" rx="3" />
+                  <path d="M10 14h28v17H10zM17 41h14M24 36v5" />
+                </svg>
+                <svg v-else-if="category.id === 'mobile-computer'" viewBox="0 0 48 48">
+                  <rect x="14" y="4" width="20" height="40" rx="4" />
+                  <path d="M18 10h12v20H18zM21 36h6" />
+                </svg>
+                <svg v-else viewBox="0 0 48 48">
+                  <path d="M10 16V7h28v9M7 16h34a3 3 0 0 1 3 3v18H4V19a3 3 0 0 1 3-3Z" />
+                  <path d="M11 25h26v16H11zM36 21h2" />
+                </svg>
+              </span>
+              <div>
+                <p>0{{ categoryIndex + 1 }} / CATEGORY</p>
+                <h2>{{ category.name }}</h2>
+              </div>
             </div>
-            <div class="hot-product-info">
-              <h4>{{ product.name }}</h4>
-              <p>{{ product.subtitle }}</p>
-              <span class="product-link">了解详情 →</span>
-            </div>
+            <p class="category-description">{{ category.desc }}</p>
+          </header>
+
+          <div class="product-grid">
+            <router-link
+              v-for="product in category.productDetails"
+              :key="product.id"
+              :to="`/products/${product.id}`"
+              class="product-card"
+              :aria-label="`查看 ${product.name} 产品详情`"
+            >
+              <div class="product-image">
+                <img
+                  v-img-oss
+                  :src="product.image"
+                  :alt="product.name"
+                  width="360"
+                  height="240"
+                  loading="lazy"
+                >
+                <!-- <span class="product-category-tag">{{ category.name }}</span> -->
+              </div>
+
+              <div class="product-info">
+                <div class="product-title-row">
+                  <h3>{{ product.name }}</h3>
+                </div>
+                <p class="product-subtitle">{{ product.subtitle }}</p>
+                <ul v-if="product.certifications?.length" class="product-tags" aria-label="产品认证与特性">
+                  <li v-for="certification in product.certifications.slice(0, 3)" :key="certification">
+                    {{ certification }}
+                  </li>
+                </ul>
+                <div class="product-footer">
+                  <span class="detail-link">查看技术参数</span>
+                  <span class="product-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 20 20"><path d="M4 10h12m-5-5 5 5-5 5" /></svg>
+                  </span>
+                </div>
+              </div>
+            </router-link>
           </div>
-        </div>
+        </section>
       </div>
     </section>
-  </div>
+  </main>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+import AboutSectionLead from '../components/AboutSectionLead.vue'
 import { productData } from '../data/products-data'
 
-const router = useRouter()
 const categories = computed(() => productData.categories)
-const hotProducts = computed(() => Object.values(productData.details).slice(0, 4))
-
-function goToDetail(id) {
-  router.push(`/products/${id}`)
-}
-
-function goToCategory(category) {
-  if (category.products.length > 0) {
-    router.push(`/products/${category.products[0]}`)
-  }
-}
+const catalog = computed(() => productData.categories.map(category => ({
+  ...category,
+  productDetails: category.products.map(productId => productData.details[productId]),
+})))
 </script>
 
 <style scoped>
-/* ---- Hero ---- */
+.products-page {
+  --catalog-ink: #10213f;
+  --catalog-muted: #5d6b80;
+  --catalog-line: #dce3ee;
+  --catalog-surface: #f4f7fb;
+  --catalog-accent: #2d67d1;
+  color: var(--catalog-ink);
+  background: #fff;
+}
+
 .product-hero {
-  height: 360px;
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #fff;
-  text-align: center;
-  background: var(--brand-gradient);
   overflow: hidden;
+  color: #fff;
 }
 
-.product-hero-bg {
+.page-hero-bg,
+.page-hero-overlay {
   position: absolute;
   inset: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 360"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%230a1e50"/><stop offset="50%" style="stop-color:%231a3c7c"/><stop offset="100%" style="stop-color:%232d5bbf"/></linearGradient></defs><rect fill="url(%23g)" width="1920" height="360"/><text x="960" y="160" text-anchor="middle" font-family="Arial" font-size="70" font-weight="700" fill="rgba(255,255,255,0.06)" letter-spacing="6">PRODUCTS</text></svg>') center/cover no-repeat;
 }
 
-.product-hero-content {
+.page-hero-content {
   position: relative;
   z-index: 1;
-}
-
-.product-hero-content h1 {
-  font-size: 44px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  margin-bottom: 8px;
-}
-
-.product-hero-content h2 {
-  font-size: 26px;
-  font-weight: 400;
-  opacity: 0.9;
-  letter-spacing: 2px;
 }
 
 .page-breadcrumb {
   position: absolute;
-  bottom: 20px;
-  right: calc(50% - 600px);
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: 32px;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 13px;
 }
 
-.page-breadcrumb a {
-  color: rgba(255, 255, 255, 0.7);
-  transition: color 0.3s;
+.page-breadcrumb a { color: rgba(255, 255, 255, 0.92); }
+.page-breadcrumb a:hover { color: #fff; }
+.page-breadcrumb span { color: rgba(255, 255, 255, 0.84); }
+.page-breadcrumb svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
 }
 
-.page-breadcrumb a:hover {
-  color: #fff;
+.catalog-nav-section {
+  padding: 72px 0 80px;
+  background: #fff;
 }
 
-/* ---- 产品分类卡片 ---- */
-.product-list-section {
-  padding: 60px 0 40px;
-  background: var(--white);
+.category-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--catalog-line);
+  border-bottom: 1px solid var(--catalog-line);
+  border-right: 1px solid var(--catalog-line);
+  border-left: 1px solid var(--catalog-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.category-nav-item {
+  display: flex;
+  align-items: center;
+  min-height: 104px;
+  gap: 18px;
+  padding: 20px 28px;
+  color: var(--catalog-ink);
+  border-right: 1px solid var(--catalog-line);
+  transition: color 180ms ease, background-color 180ms ease;
+  touch-action: manipulation;
+}
+
+.category-nav-item:last-child { border-right: 0; }
+.category-nav-item:hover {
+  color: var(--catalog-accent);
+  background: var(--catalog-surface);
+}
+
+.category-nav-index {
+  color: #8190a8;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.category-nav-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.category-nav-copy strong { font-size: 17px; }
+.category-nav-copy small {
+  color: var(--catalog-muted);
+  font-size: 13px;
+}
+
+.category-nav-item > svg,
+.product-arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.catalog-section {
+  padding: 16px 0 96px;
+  background: var(--catalog-surface);
+}
+
+.category-section {
+  padding-top: 80px;
+  scroll-margin-top: 96px;
+}
+
+.category-section + .category-section {
+  margin-top: 16px;
+  border-top: 1px solid var(--catalog-line);
+}
+
+.category-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 440px);
+  align-items: center;
+  gap: 48px;
+  margin-bottom: 32px;
+}
+
+.category-heading {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.category-icon {
+  display: grid;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  color: var(--catalog-accent);
+  background: #e6eefc;
+  border: 1px solid #d5e1f5;
+  border-radius: 12px;
+}
+
+.category-icon svg {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.category-heading p {
+  margin-bottom: 6px;
+  color: #74849d;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.category-heading h2 {
+  font-size: 28px;
+  line-height: 1.25;
+}
+
+.category-description {
+  color: var(--catalog-muted);
+  font-size: 15px;
+  line-height: 1.75;
+  text-align: right;
 }
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-}
-
-.product-category-card {
-  background: var(--bg-light);
-  border-radius: 16px;
-  padding: 40px 32px;
-  text-align: center;
-  transition: all 0.3s;
-  border: 1px solid transparent;
-}
-
-.product-category-card:hover {
-  background: var(--white);
-  border-color: var(--brand-primary);
-  box-shadow: 0 8px 30px rgba(26, 60, 124, 0.1);
-  transform: translateY(-4px);
-}
-
-.product-category-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
-}
-
-.product-category-card h3 {
-  font-size: 22px;
-  color: var(--brand-primary);
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.product-category-desc {
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.product-category-link {
-  display: inline-block;
-  font-size: 15px;
-  color: var(--brand-primary);
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.product-category-link:hover {
-  color: var(--brand-light);
-}
-
-.product-category-link.disabled {
-  color: #ccc;
-  cursor: default;
-}
-
-/* ---- 热门产品 ---- */
-.hot-products-section {
-  padding: 40px 0 80px;
-  background: var(--bg-light);
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.section-label {
-  font-size: 11px;
-  color: var(--brand-primary);
-  letter-spacing: 3px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.section-title {
-  font-size: 26px;
-  color: var(--brand-primary);
-  font-weight: 700;
-}
-
-.hot-product-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 }
 
-.hot-product-card {
-  background: var(--white);
-  border-radius: 12px;
+.product-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  color: var(--catalog-ink);
+  background: #fff;
+  border: 1px solid #e0e6ef;
+  box-shadow: 0 2px 8px rgba(16, 33, 63, 0.035);
+  border-radius: 14px;
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  touch-action: manipulation;
 }
 
-.hot-product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(26, 60, 124, 0.12);
+.product-card:hover {
+  border-color: #a9bfe4;
+  box-shadow: 0 16px 34px rgba(16, 42, 88, 0.1);
+  transform: translateY(-4px);
 }
 
-.hot-product-img {
+.product-image {
+  position: relative;
+  display: grid;
+  min-height: 244px;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(145deg, #fbfcfe, #f3f6fa);
+  border-bottom: 1px solid #e7ebf1;
+}
+
+.product-image img {
   width: 100%;
-  height: 180px;
-  background: linear-gradient(135deg, #e8f0fe, #d0e2ff);
+  height: 244px;
+  padding: 26px;
+  object-fit: contain;
+  transition: transform 280ms ease;
+}
+
+.product-card:hover .product-image img { transform: scale(1.035); }
+.product-category-tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 6px 9px;
+  color: #53647c;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #dfe5ed;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.product-info {
+  display: flex;
+  flex: 1;
+  min-height: 220px;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.product-title-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  gap: 16px;
 }
 
-.hot-product-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 20px;
+.product-title-row h3 {
+  flex: 1;
+  min-width: 0;
+  font-size: 20px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
-.hot-product-info {
-  padding: 20px;
-  /* 新增：弹性纵向布局 + 固定高度 */
-  display: flex;
-  flex-direction: column;
-  height: 150px; /* 根据视觉微调这个高度，统一所有卡片信息区高度 */
+.product-arrow {
+  display: grid;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  color: var(--catalog-accent);
+  border: 0;
+  transition: color 180ms ease, transform 180ms ease;
 }
 
-.hot-product-info h4 {
-  font-size: 16px;
-  color: var(--brand-primary);
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.hot-product-info p {
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.6;
-  /* 删除原来的margin-bottom:12px; */
-  margin-bottom: auto; /* 关键！自动撑开，把链接压到底部 */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.product-link {
-  font-size: 14px;
-  color: var(--brand-primary);
-  font-weight: 500;
-  transition: color 0.3s;
-  margin-top: 12px; /* 文字和链接之间间距 */
-}
-
-.hot-product-card:hover .product-link {
+.product-card:hover .product-arrow {
   color: var(--brand-light);
+  transform: translateX(3px);
 }
 
-/* ========== 响应式 ========== */
+.product-subtitle {
+  margin-top: 12px;
+  color: var(--catalog-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.product-tags li {
+  padding: 4px 7px;
+  color: #53647c;
+  background: #f1f4f8;
+  border: 1px solid #e5e9ef;
+  font-size: 10px;
+  line-height: 1.4;
+  border-radius: 6px;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+.detail-link {
+  color: var(--catalog-accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.category-nav-item:focus-visible,
+.product-card:focus-visible,
+.page-breadcrumb a:focus-visible {
+  outline: 3px solid #75a3ff;
+  outline-offset: 3px;
+}
+
 @media (max-width: 1024px) {
-  .hot-product-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .category-nav-item { padding: 18px; }
+  .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 768px) {
-  .product-grid {
+  .catalog-nav-section { padding: 56px 0 64px; }
+  .category-nav { grid-template-columns: 1fr; }
+  .category-nav-item {
+    min-height: 82px;
+    border-right: 0;
+    border-bottom: 1px solid var(--catalog-line);
+  }
+  .category-nav-item:last-child { border-bottom: 0; }
+  .catalog-section { padding-bottom: 72px; }
+  .category-section { padding-top: 64px; }
+  .category-header {
     grid-template-columns: 1fr;
+    gap: 18px;
   }
-  .hot-product-grid {
-    grid-template-columns: 1fr;
-  }
-  .product-hero {
-    height: 260px;
-  }
-  .product-hero-content h1 {
-    font-size: 28px;
-    letter-spacing: 2px;
-  }
-  .product-hero-content h2 {
-    font-size: 18px;
-  }
-  .page-breadcrumb {
-    right: auto;
-    left: 16px;
-    bottom: 16px;
-  }
+  .product-grid { grid-template-columns: 1fr; }
+  .product-image,
+  .product-image img { height: 260px; }
+  .product-info { min-height: 0; }
 }
 
 @media (max-width: 480px) {
-  .product-hero {
-    height: 200px;
+  .category-heading { align-items: flex-start; }
+  .category-icon {
+    flex-basis: 52px;
+    width: 52px;
+    height: 52px;
   }
-  .product-hero-content h1 {
-    font-size: 22px;
-    letter-spacing: 1px;
+  .category-icon svg {
+    width: 30px;
+    height: 30px;
   }
-  .product-hero-content h2 {
-    font-size: 15px;
+  .category-heading h2 { font-size: 24px; }
+  .product-image,
+  .product-image img {
+    height: 224px;
+    min-height: 224px;
   }
-  .product-category-card {
-    padding: 24px 20px;
-  }
-  .product-category-icon {
-    width: 60px;
-    height: 60px;
-  }
-  .product-category-card h3 {
-    font-size: 18px;
-  }
-  .hot-products-section {
-    padding: 30px 0 40px;
-  }
+  .product-info { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-nav-item,
+  .product-card,
+  .product-image img,
+  .product-arrow { transition: none; }
+  .product-card:hover,
+  .product-card:hover .product-image img { transform: none; }
 }
 </style>

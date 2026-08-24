@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDevelopment = mode === 'development'
+  const basePath = env.VITE_BASE_PATH || '/'
 
   return {
     plugins: [vue()],
@@ -12,14 +13,14 @@ export default defineConfig(({ mode }) => {
         '@': '/src'
       }
     },
-    base: '/',
+    base: basePath,
     server: {
       port: 3000,
       host: true,
       proxy: isDevelopment
         ? {
             '/api': {
-              target: env.VITE_API_PROXY_TARGET || 'http://192.168.18.2:8081',
+              target: env.VITE_API_PROXY_TARGET || 'https://www.shouhuikeji.com',
               changeOrigin: true,
             }
           }

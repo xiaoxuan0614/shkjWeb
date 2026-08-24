@@ -5,8 +5,8 @@
       <div class="page-hero-bg"></div>
       <div class="page-hero-overlay"></div>
       <div class="page-hero-content">
-        <h1>CASES</h1>
-        <h2>成功案例</h2>
+        <p class="hero-en">CASES</p>
+        <h1>智慧港口与物流数字化成功案例</h1>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt; 成功案例
@@ -15,46 +15,56 @@
 
     <!-- 案例列表 -->
     <section class="case-page-layout">
-      <div class="container" style="padding-top:40px;padding-bottom:80px;">
+      <div class="container listing-container">
+        <AboutSectionLead
+          english="Project Practice"
+          title="经真实场站验证的项目实践"
+          summary="按业务场景筛选案例，了解方案如何解决现场问题并产生持续价值。"
+        />
         <!-- 筛选 -->
         <div class="case-filter">
-          <div
+          <button
             v-for="filter in filters"
             :key="filter"
+            type="button"
             class="case-filter-btn"
             :class="{ active: activeFilter === filter }"
+            :aria-pressed="activeFilter === filter"
             @click="activeFilter = filter"
           >
             {{ filter }}
-          </div>
+          </button>
         </div>
 
         <!-- 案例网格 -->
         <div class="case-grid">
-          <div
+          <router-link
             v-for="(item, index) in paginatedCases"
             :key="item.id"
+            :to="`/cases/${item.id}`"
             class="case-card"
-            @click="goToDetail(item.id)"
           >
             <div class="case-card-img">
-              <img v-img-oss :src="item.coverImage" :alt="item.title" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='240px'">
+              <img v-img-oss :src="item.coverImage" :alt="item.title" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='240px'">
             </div>
             <div class="case-card-overlay">
               <div class="case-location">{{ item.location }}</div>
-              <h4>{{ item.title }}</h4>
+              <h3>{{ item.title }}</h3>
             </div>
-          </div>
+          </router-link>
         </div>
 
         <!-- 分页 -->
         <div class="pagination" v-if="totalPages > 1">
-          <div
+          <button
             v-for="page in totalPages"
             :key="page"
+            type="button"
             :class="['pagination-btn', { active: currentPage === page }]"
+            :aria-label="`前往第 ${page} 页`"
+            :aria-current="currentPage === page ? 'page' : undefined"
             @click.stop="currentPage = page"
-          >{{ page }}</div>
+          >{{ page }}</button>
         </div>
       </div>
     </section>
@@ -63,10 +73,9 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import AboutSectionLead from '../components/AboutSectionLead.vue'
 import { caseData } from '../data/cases-data'
 
-const router = useRouter()
 const activeFilter = ref('全部')
 const currentPage = ref(1)
 const pageSize = 10
@@ -87,9 +96,6 @@ const paginatedCases = computed(() => {
 // 切换筛选时重置页码
 watch(activeFilter, () => { currentPage.value = 1 })
 
-function goToDetail(id) {
-  router.push(`/cases/${id}`)
-}
 </script>
 
 <style scoped>
@@ -113,8 +119,8 @@ function goToDetail(id) {
 }
 
 .page-hero-content { position: relative; z-index: 1; }
-.page-hero-content h1 { font-size: 42px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; }
-.page-hero-content h2 { font-size: 26px; font-weight: 400; opacity: 0.9; }
+.page-hero-content .hero-en { font-size: 42px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; }
+.page-hero-content h1 { font-size: 26px; font-weight: 400; opacity: 0.9; }
 
 .page-breadcrumb {
   position: absolute;
@@ -225,7 +231,7 @@ function goToDetail(id) {
   border-radius: 20px;
 }
 
-.case-card-overlay h4 {
+.case-card-overlay h3 {
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 4px;

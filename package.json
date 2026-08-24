@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/generate-gallery.js && vite",
-    "build": "node scripts/generate-gallery.js && vite build",
+    "build": "node scripts/generate-gallery.js && vite build && vite build --ssr src/entry-server.js --outDir .seo-dist --emptyOutDir && node scripts/prerender.mjs && node scripts/check-seo.mjs",
+    "build:test": "VITE_BASE_PATH=/v2/ npm run build",
+    "build:client": "node scripts/generate-gallery.js && vite build",
+    "seo:check": "node scripts/check-seo.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
