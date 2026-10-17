@@ -1,0 +1,231 @@
+- generic [ref=e3]:
+  - link "跳到主要内容" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "首汇科技首页" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img "首汇科技" [ref=e8]
+      - navigation [ref=e9]:
+        - link "首页" [ref=e10] [cursor=pointer]:
+          - /url: /
+        - link "解决方案" [ref=e12] [cursor=pointer]:
+          - /url: /solutions
+        - link "产品清单" [ref=e15] [cursor=pointer]:
+          - /url: /products
+        - link "成功案例" [ref=e16] [cursor=pointer]:
+          - /url: /cases
+        - link "新闻中心" [ref=e17] [cursor=pointer]:
+          - /url: /news
+        - link "关于首汇" [ref=e18] [cursor=pointer]:
+          - /url: /about
+        - link "联系我们" [ref=e19] [cursor=pointer]:
+          - /url: /contact
+  - generic [ref=e21]:
+    - generic [ref=e24]:
+      - navigation "面包屑导航" [ref=e25]:
+        - link "首页" [ref=e26] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e27]: /
+        - link "产品清单" [ref=e28] [cursor=pointer]:
+          - /url: /products
+        - generic [ref=e29]: /
+        - generic [ref=e30]: GE MDS Orbit
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]: 数传电台
+          - heading "GE MDS Orbit" [level=1] [ref=e35]
+          - paragraph [ref=e36]: 多模块工业无线路由平台
+          - paragraph [ref=e37]: GE MDS Orbit 工业无线路由平台面向工业网络的安全性、可靠性、性能与无线灵活性需求，提供 LN 窄带数传、ISM 频段、3G/4G 公网及 Wi-Fi 等无线模块选择，并支持冗余链路，减少无线链路中断时间。
+          - generic [ref=e38]:
+            - link "获取产品咨询" [ref=e39] [cursor=pointer]:
+              - /url: /contact
+            - link "查看技术规格" [ref=e42] [cursor=pointer]:
+              - /url: "#specifications"
+        - generic [ref=e43]:
+          - generic [ref=e44]: PRODUCT / 02
+          - img "GE MDS Orbit" [ref=e45]
+    - generic [ref=e49]:
+      - complementary [ref=e50]:
+        - generic [ref=e55]:
+          - heading "产品系列" [level=2] [ref=e56]
+          - paragraph [ref=e57]: 按设备类别快速浏览
+        - navigation "产品系列导航" [ref=e58]:
+          - link "车载智能电脑 02" [ref=e60] [cursor=pointer]:
+            - /url: /products/dlt-v73
+            - generic [ref=e61]: 车载智能电脑
+            - generic [ref=e62]: "02"
+          - link "手持移动终端 04" [ref=e64] [cursor=pointer]:
+            - /url: /products/ct47
+            - generic [ref=e65]: 手持移动终端
+            - generic [ref=e66]: "04"
+          - link "条码产品 03" [ref=e68] [cursor=pointer]:
+            - /url: /products/granit-ultra-2105i
+            - generic [ref=e69]: 条码产品
+            - generic [ref=e70]: "03"
+          - generic [ref=e71]:
+            - link "数传电台 02" [ref=e72] [cursor=pointer]:
+              - /url: /products/ge-mds-master-station
+              - generic [ref=e73]: 数传电台
+              - generic [ref=e74]: "02"
+            - generic [ref=e75]:
+              - link "GE MDS Master Station" [ref=e76] [cursor=pointer]:
+                - /url: /products/ge-mds-master-station
+              - link "GE MDS Orbit" [ref=e77] [cursor=pointer]:
+                - /url: /products/ge-mds-orbit
+      - main [ref=e78]:
+        - region [ref=e79]:
+          - generic [ref=e80]:
+            - text: QUALITY STANDARD
+            - heading "专业认证" [level=2] [ref=e81]
+          - generic [ref=e82]:
+            - generic [ref=e83]: FCC
+            - generic [ref=e86]: ETSI / CE
+            - generic [ref=e89]: IEEE 1613
+            - generic [ref=e92]: CSA Class 1, Div. 2
+            - generic [ref=e95]: EN 60079-0:2012
+            - generic [ref=e98]: EN 60079-15:2010
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - text: SPECIFICATIONS
+              - heading "产品规格" [level=2] [ref=e104]
+            - paragraph [ref=e105]: 关键参数与工业环境适配能力
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - term [ref=e108]: 频段
+              - definition [ref=e109]: 150–174 MHz、220–235 MHz、330–512 MHz；902–928 MHz；2G/3G/4G；Wi-Fi
+            - generic [ref=e110]:
+              - term [ref=e111]: 数据速率
+              - definition [ref=e112]: 窄带数传最高 240 Kbps（50 kHz）、120 Kbps（25 kHz）
+            - generic [ref=e113]:
+              - term [ref=e114]: 调制方式
+              - definition [ref=e115]: CPFSK、QPSK、16QAM、64QAM，双向自适应
+            - generic [ref=e116]:
+              - term [ref=e117]: 可选无线模块
+              - definition [ref=e118]: LN 模块、ISM 频段模块、公网模块、Wi-Fi 模块
+            - generic [ref=e119]:
+              - term [ref=e120]: 操作模式
+              - definition [ref=e121]: 单工、半双工
+            - generic [ref=e122]:
+              - term [ref=e123]: 频率稳定度
+              - definition [ref=e124]: ±0.5 ppm
+            - generic [ref=e125]:
+              - term [ref=e126]: 载波功率
+              - definition [ref=e127]: 20–40 dBm（100 mW–10 W）可调
+            - generic [ref=e128]:
+              - term [ref=e129]: 误码率
+              - definition [ref=e130]: "-114 dBm @ 1 × 10⁻⁶ BER（25 kHz-QPSK）"
+            - generic [ref=e131]:
+              - term [ref=e132]: 数据接口
+              - definition [ref=e133]: RJ45 网口 × 2、DB9 串口 × 1、USB × 1；网口数量可扩展为 4 个
+            - generic [ref=e134]:
+              - term [ref=e135]: 天线接口
+              - definition [ref=e136]: TNC 母头、SMA 母头
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - generic [ref=e139]:
+              - text: CORE FEATURES
+              - heading "核心特点" [level=2] [ref=e140]
+            - paragraph [ref=e141]: 为高强度业务场景而设计
+          - generic [ref=e142]:
+            - article [ref=e143]:
+              - generic [ref=e144]: "01"
+              - heading "高带宽" [level=3] [ref=e149]
+              - paragraph [ref=e150]: 在窄带频谱上采用 QAM 调制，提高空中无线传输速率，满足更高带宽的应用需求。
+            - article [ref=e151]:
+              - generic [ref=e152]: "02"
+              - heading "多模块" [level=3] [ref=e157]
+              - paragraph [ref=e158]: 支持 LN、ISM 频段、公网及 Wi-Fi 等多种无线模块，灵活配置通信方式。
+            - article [ref=e159]:
+              - generic [ref=e160]: "03"
+              - heading "多接口" [level=3] [ref=e165]
+              - paragraph [ref=e166]: 支持网口、串口和 USB 接口，网口数量可扩展为 4 个。
+            - article [ref=e167]:
+              - generic [ref=e168]: "04"
+              - heading "冗余链路" [level=3] [ref=e173]
+              - paragraph [ref=e174]: 通过电台冗余链路减少无线链路中断时间，提高网络可用性。
+        - navigation "同系列产品切换" [ref=e175]:
+          - link "上一款产品 ← GE MDS Master Station" [ref=e176] [cursor=pointer]:
+            - /url: /products/ge-mds-master-station
+            - generic [ref=e177]: 上一款产品
+            - strong [ref=e178]: ← GE MDS Master Station
+    - generic [ref=e181]:
+      - generic [ref=e182]:
+        - text: PRODUCT CONSULTING
+        - heading "让合适的设备进入合适的业务场景" [level=2] [ref=e183]
+        - paragraph [ref=e184]: 告诉我们您的作业环境和业务需求，获取专业的产品选型建议。
+      - link "联系产品顾问" [ref=e185] [cursor=pointer]:
+        - /url: /contact
+        - text: 联系产品顾问
+        - generic [aria-hidden] [ref=e186]: →
+  - contentinfo [ref=e187]:
+    - generic [ref=e188]:
+      - generic [ref=e189]:
+        - generic [ref=e190]:
+          - img "首汇科技" [ref=e191]
+          - generic [ref=e192]:
+            - link "022-66220191" [ref=e196] [cursor=pointer]:
+              - /url: tel:022-66220191
+            - paragraph [ref=e197]: 办公地址：天津市滨海新区京门大道396号
+          - generic [ref=e198]:
+            - img "公众号二维码" [ref=e199]
+            - generic [ref=e200]: 关注公众号
+        - generic [ref=e201]:
+          - generic [ref=e202]:
+            - heading "关于我们" [level=4] [ref=e203]
+            - list [ref=e204]:
+              - listitem [ref=e205]:
+                - link "集团概况" [ref=e206] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e207]:
+                - link "发展历程" [ref=e208] [cursor=pointer]:
+                  - /url: /about/history
+              - listitem [ref=e209]:
+                - link "企业理念" [ref=e210] [cursor=pointer]:
+                  - /url: /about/philosophy
+          - generic [ref=e211]:
+            - heading "解决方案" [level=4] [ref=e212]
+            - list [ref=e213]:
+              - listitem [ref=e214]:
+                - link "智能闸口" [ref=e215] [cursor=pointer]:
+                  - /url: /solutions/gate
+              - listitem [ref=e216]:
+                - link "数字场站" [ref=e217] [cursor=pointer]:
+                  - /url: /solutions/yard
+              - listitem [ref=e218]:
+                - link "安全监管" [ref=e219] [cursor=pointer]:
+                  - /url: /solutions/safety
+              - listitem [ref=e220]:
+                - link "硬件基建" [ref=e221] [cursor=pointer]:
+                  - /url: /solutions/hardware
+          - generic [ref=e222]:
+            - heading "产品清单" [level=4] [ref=e223]
+            - list [ref=e224]:
+              - listitem [ref=e225]:
+                - link "车载终端" [ref=e226] [cursor=pointer]:
+                  - /url: /products/dlt-v73
+              - listitem [ref=e227]:
+                - link "手持终端" [ref=e228] [cursor=pointer]:
+                  - /url: /products/ct47
+              - listitem [ref=e229]:
+                - link "条码产品" [ref=e230] [cursor=pointer]:
+                  - /url: /products/granit-ultra-2105i
+              - listitem [ref=e231]:
+                - link "数传电台" [ref=e232] [cursor=pointer]:
+                  - /url: /products/ge-mds-master-station
+          - generic [ref=e233]:
+            - heading "新闻中心" [level=4] [ref=e234]
+            - list [ref=e235]:
+              - listitem [ref=e236]:
+                - link "公司新闻" [ref=e237] [cursor=pointer]:
+                  - /url: /news
+      - generic [ref=e238]:
+        - generic [ref=e239]: © 首汇科技 版权所有
+        - link "津ICP备 2024021663号-1" [ref=e240] [cursor=pointer]:
+          - /url: http://beian.miit.gov.cn/
+        - link "津公网安备 12011602301131号" [ref=e241] [cursor=pointer]:
+          - /url: https://beian.mps.gov.cn/#/query/webSearch
+        - link "返回顶部" [ref=e242] [cursor=pointer]:
+          - /url: "#"
+  - generic [ref=e243] [cursor=pointer]: ↑

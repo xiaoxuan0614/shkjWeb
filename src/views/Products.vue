@@ -60,6 +60,10 @@
                   <rect x="14" y="4" width="20" height="40" rx="4" />
                   <path d="M18 10h12v20H18zM21 36h6" />
                 </svg>
+                <svg v-else-if="category.id === 'data-radio'" viewBox="0 0 48 48">
+                  <rect x="5" y="25" width="38" height="15" rx="3" />
+                  <path d="M11 33h2m5 0h2M24 25V14m-6 5a8 8 0 0 1 0-11m12 0a8 8 0 0 1 0 11M13 23a14 14 0 0 1 0-19m22 0a14 14 0 0 1 0 19" />
+                </svg>
                 <svg v-else viewBox="0 0 48 48">
                   <path d="M10 16V7h28v9M7 16h34a3 3 0 0 1 3 3v18H4V19a3 3 0 0 1 3-3Z" />
                   <path d="M11 25h26v16H11zM36 21h2" />
@@ -191,7 +195,7 @@ const catalog = computed(() => productData.categories.map(category => ({
 
 .category-nav {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   border-top: 1px solid var(--catalog-line);
   border-bottom: 1px solid var(--catalog-line);
   border-right: 1px solid var(--catalog-line);

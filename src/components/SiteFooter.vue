@@ -43,6 +43,7 @@
               <li><router-link to="/products/dlt-v73">车载终端</router-link></li>
               <li><router-link to="/products/ct47">手持终端</router-link></li>
               <li><router-link to="/products/granit-ultra-2105i">条码产品</router-link></li>
+              <li><router-link to="/products/ge-mds-master-station">数传电台</router-link></li>
             </ul>
           </div>
           <div class="nav-col">
