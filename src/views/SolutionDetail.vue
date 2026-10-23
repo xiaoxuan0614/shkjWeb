@@ -492,7 +492,7 @@ watch(() => route.params.id, (newId) => {
 
 .scenario-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 }
 
@@ -502,12 +502,6 @@ watch(() => route.params.id, (newId) => {
   background: #fff;
   border-radius: 14px;
   box-shadow: 0 8px 24px rgba(26, 60, 124, 0.08);
-}
-
-.scenario-item:nth-child(3):last-child {
-  grid-column: 1 / -1;
-  width: calc(50% - 12px);
-  justify-self: center;
 }
 
 .scenario-item img {
@@ -787,10 +781,6 @@ watch(() => route.params.id, (newId) => {
   }
   .scenario-grid {
     grid-template-columns: 1fr;
-  }
-  .scenario-item:nth-child(3):last-child {
-    grid-column: auto;
-    width: 100%;
   }
   .cases-grid {
     grid-template-columns: 1fr;
