@@ -9,7 +9,7 @@ export const SITE_NAME = '首汇科技'
 const staticSeo = {
   '/': {
     title: '智慧堆场与港口数字化解决方案 - 首汇科技',
-    description: '首汇科技面向港口、集装箱堆场、仓储与物流企业，提供智能闸口、堆场管理、仓储物料管理、安全监管、工业终端和无线网络覆盖解决方案。',
+    description: '首汇科技面向港口、集装箱堆场、仓储、物流与工业企业，提供智能闸口、数字场站、安全监管、硬件基建和无线专网建设解决方案。',
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'Organization',
@@ -27,8 +27,8 @@ const staticSeo = {
     },
   },
   '/solutions': {
-    title: '智慧港口与堆场解决方案 - 首汇科技',
-    description: '查看首汇科技智能闸口、数字场站、安全合规监管、工业硬件与无线网络基建解决方案。',
+    title: '智慧港口 堆场与工业通信解决方案 - 首汇科技',
+    description: '查看首汇科技智能闸口、数字场站、安全合规监管、硬件网络基建与工业无线专网建设解决方案。',
   },
   '/products': {
     title: '工业PDA、条码设备与数传电台产品 - 首汇科技',

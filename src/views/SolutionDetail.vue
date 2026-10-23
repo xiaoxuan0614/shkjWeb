@@ -68,12 +68,22 @@
             v-for="(block, i) in detail.features"
             :key="block.title"
             role="tabpanel"
-            :class="['func-content-panel', { active: activeFeature === i }]"
+            :class="['func-content-panel', {
+              active: activeFeature === i,
+              'has-scenarios': block.scenarios?.length,
+            }]"
             :aria-hidden="activeFeature !== i"
           >
             <div class="func-content-left">
               <div class="func-content-img">
-                <img v-img-oss :src="block.image" :alt="block.title" loading="lazy" onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='280px'">
+                <img
+                  v-img-oss
+                  :src="block.image"
+                  :alt="block.title"
+                  :style="{ objectFit: block.imageFit || 'cover' }"
+                  loading="lazy"
+                  onerror="this.style.background='linear-gradient(135deg,#1a3c7c,#2d5bbf)';this.style.minHeight='280px'"
+                >
               </div>
             </div>
             <div class="func-content-right">
@@ -86,6 +96,15 @@
                     <p>{{ item.desc }}</p>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div v-if="block.scenarios?.length" class="func-scenarios">
+              <h4>典型应用场景</h4>
+              <div class="scenario-grid">
+                <figure v-for="scenario in block.scenarios" :key="scenario.title" class="scenario-item">
+                  <img v-img-oss :src="scenario.image" :alt="scenario.title" loading="lazy">
+                  <figcaption>{{ scenario.title }}</figcaption>
+                </figure>
               </div>
             </div>
           </div>
@@ -102,7 +121,7 @@
     </section>
 
     <!-- 相关案例 -->
-    <section class="detail-section cases-section">
+    <section v-if="relatedCases.length" class="detail-section cases-section">
       <div class="container">
         <div class="section-label">CASES</div>
         <h2 class="section-title">相关案例</h2>
@@ -402,6 +421,10 @@ watch(() => route.params.id, (newId) => {
   top: 140px;
 }
 
+.func-content-panel.has-scenarios .func-content-left {
+  position: static;
+}
+
 .func-content-img {
   border-radius: 16px;
   overflow: hidden;
@@ -453,6 +476,54 @@ watch(() => route.params.id, (newId) => {
   font-size: 13px;
   color: #888;
   line-height: 1.9;
+}
+
+.func-scenarios {
+  grid-column: 1 / -1;
+  margin-top: 22px;
+}
+
+.func-scenarios > h4 {
+  margin-bottom: 18px;
+  color: #1a3c7c;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.scenario-item {
+  margin: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(26, 60, 124, 0.08);
+}
+
+.scenario-item:nth-child(3):last-child {
+  grid-column: 1 / -1;
+  width: calc(50% - 12px);
+  justify-self: center;
+}
+
+.scenario-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  object-fit: contain;
+  background: #fff;
+}
+
+.scenario-item figcaption {
+  padding: 14px 18px 16px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* ---- 系统功能架构图 ---- */
@@ -713,6 +784,13 @@ watch(() => route.params.id, (newId) => {
   }
   .func-content-left {
     position: static;
+  }
+  .scenario-grid {
+    grid-template-columns: 1fr;
+  }
+  .scenario-item:nth-child(3):last-child {
+    grid-column: auto;
+    width: 100%;
   }
   .cases-grid {
     grid-template-columns: 1fr;

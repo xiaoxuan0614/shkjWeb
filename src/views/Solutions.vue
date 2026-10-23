@@ -5,20 +5,20 @@
       <div class="solution-hero-bg"></div>
       <div class="solution-hero-content">
         <p class="hero-en">SOLUTIONS</p>
-        <h1>智慧港口与堆场解决方案</h1>
+        <h1>智慧港口 堆场与工业通信解决方案</h1>
       </div>
       <div class="page-breadcrumb">
         <router-link to="/">首页</router-link> &gt; 解决方案
       </div>
     </section>
 
-    <!-- 4大方案模块 -->
+    <!-- 解决方案模块 -->
     <section class="solution-modules">
       <div class="container">
         <AboutSectionLead
           english="Core Solutions"
           title="覆盖场站全流程的数字化能力"
-          summary="从前端识别、业务运营到安全监管和基础设施，按场景组合落地。"
+          summary="从前端识别、业务运营到安全监管、基础设施和工业专网，按场景组合落地。"
         />
         <div class="module-grid">
           <router-link
@@ -80,6 +80,13 @@ const solutionModules = [
     desc: 'IoT设备接入、5G网络覆盖、边缘计算支持，工业级终端稳定运行',
     image: '/images/case/hardware.png',
     imagePosition: 'center 58%',
+  },
+  {
+    id: 'wireless',
+    title: '无线专网建设',
+    desc: '融合多频段无线通信与冗余链路，为工业现场构建连续、稳定、可管理的专用网络',
+    image: '/images/solutions/wireless-private-network-oil-gas.jpg',
+    imagePosition: 'center center',
   },
 ]
 
@@ -170,6 +177,12 @@ const solutionModules = [
   box-shadow: 0 12px 30px rgba(26, 60, 124, 0.12);
 }
 
+.module-card:nth-child(5):last-child {
+  grid-column: 1 / -1;
+  width: calc((100% - 72px) / 4);
+  justify-self: center;
+}
+
 .module-card-img {
   width: 100%;
   height: 200px;
@@ -225,11 +238,18 @@ const solutionModules = [
   .module-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .module-card:nth-child(5):last-child {
+    width: calc((100% - 24px) / 2);
+  }
 }
 
 @media (max-width: 768px) {
   .module-grid {
     grid-template-columns: 1fr;
+  }
+  .module-card:nth-child(5):last-child {
+    grid-column: auto;
+    width: 100%;
   }
   .solution-hero {
     height: 280px;

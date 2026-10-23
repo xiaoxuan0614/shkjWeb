@@ -35,6 +35,7 @@
               <li><router-link to="/solutions/yard">数字场站</router-link></li>
               <li><router-link to="/solutions/safety">安全监管</router-link></li>
               <li><router-link to="/solutions/hardware">硬件基建</router-link></li>
+              <li><router-link to="/solutions/wireless">无线专网</router-link></li>
             </ul>
           </div>
           <div class="nav-col">

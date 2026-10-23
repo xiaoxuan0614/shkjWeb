@@ -11,6 +11,7 @@ const solutionTabs = [
   { name: '数字场站建设', path: '/solutions/yard' },
   { name: '安全合规监管', path: '/solutions/safety' },
   { name: '硬件网络基建', path: '/solutions/hardware' },
+  { name: '无线专网建设', path: '/solutions/wireless' },
 ]
 
 function closeMobile() {

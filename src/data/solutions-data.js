@@ -190,7 +190,7 @@ export const solutionData = {
   hardware: {
     title: '硬件网络基建',
     subtitle: 'IoT设备接入 · 5G网络覆盖 · 边缘计算支持',
-    intro: '工业级手持智能终端、打印扫码设备、车载智能终端、室外无线通信基站、国产化工业工控机，全方位支撑智慧物流场站的基础设施需求。兼容原有设备改造，大幅降低升级成本。',
+    intro: '工业级手持智能终端、打印扫码设备、车载智能终端、室外无线通信基站与国产化工业工控机，全方位支撑智慧物流场站及工业现场的基础设施需求。兼容原有设备改造，大幅降低升级成本。',
     values: [
       { icon: '📡', title: '无线网络覆盖', desc: '工业级基站远距离大范围组网，场区无通信死角，业务数据实时传输' },
       { icon: '⚖️', title: '动态称重采集', desc: '叉车集成称重模块，作业同步采集箱货重量，自动同步生产系统' },
@@ -235,6 +235,37 @@ export const solutionData = {
       { name: '广州港', image: '/images/solutions/case-guangzhou.png' },
       { name: '厦门港', image: '/images/solutions/case-xiamen.png' },
       { name: '大连港', image: '/images/solutions/case-dalian.png' },
+    ],
+  },
+
+  // ============ 无线专网建设 ============
+  wireless: {
+    title: '无线专网建设',
+    subtitle: '多频段融合 · 链路冗余 · 工业可靠通信',
+    intro: '面向电力、水务、石油天然气等工业现场，融合 VHF/UHF 窄带、免许可 ISM、公网蜂窝与 Wi-Fi 通信方式，按现场条件灵活组网。通过双无线模块与链路冗余设计，保障 SCADA、自动化控制及远程监测业务连续、稳定传输。',
+    values: [
+      { icon: '📡', title: '多频段灵活组网', desc: '支持 VHF/UHF、ISM、公网蜂窝与 Wi-Fi，可结合覆盖距离、带宽及现场条件灵活选型' },
+      { icon: '🔁', title: '链路冗余保障', desc: '双无线模块配合虚拟射频信道，可组合不同通信链路，增强网络连续性' },
+      { icon: '🛡️', title: '工业通信可靠', desc: '自适应 QAM 调制与 FEC 纠错提升频谱利用率和传输稳定性，适配连续通信业务' },
+      { icon: '🖥️', title: '远程统一管理', desc: '集中监测信号质量、吞吐量与可用性，并可通过标准协议接入网管平台' },
+    ],
+    features: [
+      {
+        title: '工业无线专网',
+        image: '/images/solutions/wireless-private-network.jpg',
+        imageFit: 'contain',
+        items: [
+          { title: '多种无线频段', desc: '支持需许可的 VHF/UHF 频段及免许可 ISM 频段，可按现场条件选用 100MHz、200MHz、400MHz、700MHz、900MHz，并支持 3G/4G 公网通信。' },
+          { title: '冗余链路设计', desc: 'GE MDS Orbit 平台支持两个硬件无线模块灵活选配，可组合 VHF/UHF 窄带、ISM、公网及 Wi-Fi 模块，并通过虚拟射频信道实现无线链路冗余。' },
+          { title: '工业通信可靠', desc: '采用自适应 QAM 调制与 FEC 纠错技术，提升窄带频谱利用率和传输效率，适配 SCADA、自动化控制等对连续通信要求较高的工业场景。' },
+          { title: '远程网络管理', desc: '支持在线监测 RSSI、SNR、BER、吞吐量与可用性；兼容 SNMP（MIB-II）和 NETCONF，可接入网管平台，并按告警阈值联动工单或管理系统。' },
+        ],
+        scenarios: [
+          { title: '电力设施现场网络', image: '/images/solutions/wireless-private-network-power.jpg' },
+          { title: '水厂无线网络应用', image: '/images/solutions/wireless-private-network-water.jpg' },
+          { title: '石油天然气现场网络', image: '/images/solutions/wireless-private-network-oil-gas.jpg' },
+        ],
+      },
     ],
   },
 }
